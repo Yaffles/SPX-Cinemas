@@ -4,6 +4,7 @@ require_once("database.php");
 require_once("auditLog.php");
 require_once(__DIR__."/../utilities/cipher.php");
 require("utilities/sanitize.php");
+
 /**
  * STATIC secured_decrypt().
  * Two stage decryption of data
@@ -147,7 +148,7 @@ CLASS Member EXTENDS Database {
     public function setTown($town=null) {
         IF ($town) {
             $sanitized = escapeGET($town);
-            $this->town = $santiized;
+            $this->town = $sanitized;
         }
     }
     public function setState($state=null) {

@@ -8,8 +8,8 @@ session_unset();
 session_start();
 
 require("model/member.php");
-require("utilities/sanitize.php");
-
+// require("utilities/sanitize.php");
+// TODO: not required as in member.php
 $message="Please login to this wonderful website";
 
 $method  = $_SERVER["REQUEST_METHOD"];

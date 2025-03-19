@@ -1,7 +1,7 @@
 <?php
 require("model/member.php");
-require("utilities/sanitize.php");
-
+// require("utilities/sanitize.php");
+// TODO: not required as in member.php
 // First check IF we are already logged in - get session data with the session_start
 session_start();
 // IF UserName exists then already logged in - so we are updating Member details
