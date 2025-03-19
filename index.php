@@ -15,7 +15,7 @@ require(__DIR__.'\utilities\sessionCheck.php');
     <maincontent>
         <h1>Welcome to SPX Cinemas</h1>
         <div >
-            <img class="mainImg" src="img/coverImage.png"></img>
+            <img class="mainImg" src="img/coverImage.webp"></img>
         </div>
     </maincontent>
     <?php

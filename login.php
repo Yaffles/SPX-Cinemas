@@ -19,7 +19,7 @@ IF ($method=="POST") {
     $userName = $_POST["userName"];
     $password = $_POST["password"];
     
-
+    
     $member = new Member();
 
     $message = "Invalid Login, Try Again";
