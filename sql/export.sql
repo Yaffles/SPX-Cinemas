@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               8.0.30 - MySQL Community Server - GPL
+-- Host:                         spx-webtest-s01
+-- Server version:               8.0.33 - MySQL Community Server - GPL
 -- Server OS:                    Win64
 -- HeidiSQL Version:             12.1.0.6537
 -- --------------------------------------------------------
@@ -14,7 +14,14 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping structure for table 12send8.auditlog
+
+-- Dumping database structure for furi01db
+DROP DATABASE IF EXISTS `furi01db`;
+CREATE DATABASE IF NOT EXISTS `furi01db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `furi01db`;
+
+-- Dumping structure for table furi01db.auditlog
+DROP TABLE IF EXISTS `auditlog`;
 CREATE TABLE IF NOT EXISTS `auditlog` (
   `auditLogId` int NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -22,228 +29,82 @@ CREATE TABLE IF NOT EXISTS `auditlog` (
   `action` varchar(50) DEFAULT NULL,
   `entry` longtext,
   PRIMARY KEY (`auditLogId`)
-) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=643 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table 12send8.auditlog: ~216 rows (approximately)
+-- Dumping data for table furi01db.auditlog: ~40 rows (approximately)
 INSERT INTO `auditlog` (`auditLogId`, `timestamp`, `entity`, `action`, `entry`) VALUES
-	(1, '2025-02-05 22:33:12', 'User', 'Login', 'MemberId:2, UserName:admin - Successful login.'),
-	(2, '2025-02-05 22:34:14', 'User', 'logout', 'memberId:2, UserName:admin - has logged out'),
-	(3, '2025-02-05 22:34:40', 'User', 'User Exists Check', 'Verified: User Exists: <admin>'),
-	(4, '2025-02-05 22:35:08', 'User', 'Login', 'UserName:joe: - Failed Login: Invalid Password'),
-	(5, '2025-02-05 22:35:30', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<jimmy>'),
-	(6, '2025-02-05 22:35:30', 'User', 'Save', 'Add Successful: memberId:0, UserName:jimmy'),
-	(7, '2025-02-05 22:35:59', 'User', 'Login', 'MemberId:6, UserName:jimmy - Successful login.'),
-	(8, '2025-02-05 22:36:17', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(9, '2025-02-05 23:34:59', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<mary>'),
-	(10, '2025-02-05 23:36:16', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<mary>'),
-	(11, '2025-02-05 23:37:30', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<mary>'),
-	(12, '2025-02-07 00:06:55', 'User', 'Login', 'MemberId:6, UserName:jimmy - Successful login.'),
-	(13, '2025-02-07 00:06:57', 'User', 'logout', 'memberId:6, UserName:jimmy - has logged out'),
-	(14, '2025-02-07 00:06:59', 'User', 'Login', 'MemberId:6, UserName:jimmy - Successful login.'),
-	(15, '2025-02-07 00:07:04', 'User', 'logout', 'memberId:6, UserName:jimmy - has logged out'),
-	(16, '2025-02-07 00:07:38', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<jack>'),
-	(17, '2025-02-07 00:07:38', 'User', 'Save', 'Add Successful: memberId:0, UserName:jack'),
-	(18, '2025-02-07 00:07:47', 'User', 'Login', 'MemberId:7, UserName:jack - Successful login.'),
-	(19, '2025-02-07 00:08:07', 'User', 'Save', 'Update Successful: memberId:7, UserName:jack'),
-	(20, '2025-02-07 00:08:49', 'User', 'Save', 'Update Successful: memberId:7, UserName:jack'),
-	(21, '2025-02-07 00:08:56', 'User', 'Delete', 'Delete Successful: memberId:7, UserName:jack'),
-	(22, '2025-02-07 00:10:06', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<jack>'),
-	(23, '2025-02-07 00:10:06', 'User', 'Save', 'Add Successful: memberId:0, UserName:jack'),
-	(24, '2025-02-07 00:17:36', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<jeff>'),
-	(25, '2025-02-07 00:17:36', 'User', 'Save', 'Add Successful: memberId:0, UserName:jeff'),
-	(26, '2025-02-07 00:20:05', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(27, '2025-02-07 00:20:24', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(28, '2025-02-07 00:20:26', 'User', 'Login', 'MemberId:6, UserName:jimmy - Successful login.'),
-	(29, '2025-02-07 00:20:27', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(30, '2025-02-07 00:20:29', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(31, '2025-02-07 00:20:44', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(32, '2025-02-07 00:20:44', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(33, '2025-02-07 00:20:56', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(34, '2025-02-07 00:20:56', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(35, '2025-02-07 00:20:57', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(36, '2025-02-07 00:20:57', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(37, '2025-02-07 00:20:57', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(38, '2025-02-07 00:20:57', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(39, '2025-02-07 00:21:12', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(40, '2025-02-07 00:21:12', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(41, '2025-02-07 00:21:13', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(42, '2025-02-07 00:21:13', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(43, '2025-02-07 00:21:13', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(44, '2025-02-07 00:21:13', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(45, '2025-02-07 00:21:14', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(46, '2025-02-07 00:21:14', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(47, '2025-02-07 00:21:14', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(48, '2025-02-07 00:21:14', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(49, '2025-02-07 00:21:15', 'User', 'logout', 'memberId:6, UserName:jimmy - has logged out'),
-	(50, '2025-02-07 00:21:15', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(51, '2025-02-07 00:21:16', 'User', 'Login', 'MemberId:6, UserName:jimmy - Successful login.'),
-	(52, '2025-02-07 00:21:16', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(53, '2025-02-07 00:21:25', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(54, '2025-02-07 00:22:17', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(55, '2025-02-07 00:22:26', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(56, '2025-02-07 00:23:00', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(57, '2025-02-07 00:23:00', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(58, '2025-02-07 00:23:03', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(59, '2025-02-07 00:23:03', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(60, '2025-02-07 00:23:12', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(61, '2025-02-07 00:23:12', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(62, '2025-02-07 00:23:21', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(63, '2025-02-07 00:23:21', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(64, '2025-02-07 00:23:24', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(65, '2025-02-07 00:23:24', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(66, '2025-02-07 00:23:38', 'User', 'logout', 'memberId:6, UserName:jimmy - has logged out'),
-	(67, '2025-02-07 00:23:38', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(68, '2025-02-07 00:23:40', 'User', 'Login', 'MemberId:6, UserName:jimmy - Successful login.'),
-	(69, '2025-02-07 00:23:40', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(70, '2025-02-07 00:23:42', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(71, '2025-02-07 00:23:50', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(72, '2025-02-07 00:23:50', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(73, '2025-02-07 00:26:17', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(74, '2025-02-07 00:26:17', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(75, '2025-02-07 00:26:25', 'User', 'logout', 'memberId:6, UserName:jimmy - has logged out'),
-	(76, '2025-02-07 00:26:25', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(77, '2025-02-07 00:26:28', 'User', 'Login', 'MemberId:6, UserName:jimmy - Successful login.'),
-	(78, '2025-02-07 00:26:28', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(79, '2025-02-07 00:26:32', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(80, '2025-02-07 00:26:37', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(81, '2025-02-07 00:26:37', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(82, '2025-02-07 00:27:21', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(83, '2025-02-07 00:27:23', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(84, '2025-02-07 00:27:24', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(85, '2025-02-07 00:27:25', 'User', 'logout', 'memberId:6, UserName:jimmy - has logged out'),
-	(86, '2025-02-07 00:27:25', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(87, '2025-02-07 00:27:27', 'User', 'Login', 'MemberId:6, UserName:jimmy - Successful login.'),
-	(88, '2025-02-07 00:27:27', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(89, '2025-02-07 00:27:30', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(90, '2025-02-07 00:27:37', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(91, '2025-02-07 00:30:08', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(92, '2025-02-07 00:30:08', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(93, '2025-02-07 00:30:13', 'User', 'logout', 'memberId:6, UserName:jimmy - has logged out'),
-	(94, '2025-02-07 00:30:13', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(95, '2025-02-07 00:30:15', 'User', 'Login', 'MemberId:6, UserName:jimmy - Successful login.'),
-	(96, '2025-02-07 00:30:15', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(97, '2025-02-07 00:30:17', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(98, '2025-02-07 00:34:18', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(99, '2025-02-07 00:34:19', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(100, '2025-02-07 00:37:18', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(101, '2025-02-07 00:37:20', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(102, '2025-02-07 00:37:22', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(103, '2025-02-07 00:37:39', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(104, '2025-02-07 00:38:09', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(105, '2025-02-07 00:38:09', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(106, '2025-02-07 00:38:15', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(107, '2025-02-07 00:38:15', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(108, '2025-02-07 00:46:51', 'User', 'Save', 'Update Successful: memberId:6, UserName:jimmy'),
-	(109, '2025-02-07 00:46:51', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(110, '2025-02-07 00:46:53', 'User', 'logout', 'memberId:6, UserName:jimmy - has logged out'),
-	(111, '2025-02-07 00:46:53', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(112, '2025-02-07 00:46:59', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(113, '2025-02-10 01:13:11', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(114, '2025-02-10 01:13:28', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<john>'),
-	(115, '2025-02-10 01:13:28', 'User', 'Save', 'Add Successful: memberId:0, UserName:john'),
-	(116, '2025-02-10 01:13:28', 'User', 'Destroy', 'DESTROY member object: memberId:0, UserName:john'),
-	(117, '2025-02-10 01:14:00', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(118, '2025-02-10 01:14:06', 'User', 'Login', 'UserName:john: - Failed Login: Invalid Password'),
-	(119, '2025-02-10 01:14:06', 'User', 'Destroy', 'DESTROY member object: memberId:10, UserName:john'),
-	(120, '2025-02-10 01:14:07', 'User', 'Login', 'UserName:jimmy: - Failed Login: Invalid Password'),
-	(121, '2025-02-10 01:14:08', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(122, '2025-02-10 01:14:08', 'User', 'Login', 'UserName:jimmy: - Failed Login: Invalid Password'),
-	(123, '2025-02-10 01:14:08', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(124, '2025-02-10 01:14:19', 'User', 'Login', 'UserName:jimmy: - Failed Login: Invalid Password'),
-	(125, '2025-02-10 01:14:19', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(126, '2025-02-10 01:18:01', 'User', 'Login', 'UserName:jimmy: - Failed Login: Invalid Password'),
-	(127, '2025-02-10 01:18:01', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(128, '2025-02-10 01:18:03', 'User', 'Login', 'UserName:jimmy: - Failed Login: Invalid Password'),
-	(129, '2025-02-10 01:18:03', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(130, '2025-02-10 01:18:04', 'User', 'Login', 'UserName:jimmy: - Failed Login: Invalid Password'),
-	(131, '2025-02-10 01:18:04', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(132, '2025-02-10 01:23:39', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(133, '2025-02-10 01:23:40', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(134, '2025-02-10 01:23:49', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<d>'),
-	(135, '2025-02-10 01:23:49', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:d'),
-	(136, '2025-02-10 01:25:13', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<d>'),
-	(137, '2025-02-10 01:25:13', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:d'),
-	(138, '2025-02-10 01:25:17', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<d>'),
-	(139, '2025-02-10 01:25:17', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:d'),
-	(140, '2025-02-10 01:25:29', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<d>'),
-	(141, '2025-02-10 01:25:29', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:d'),
-	(142, '2025-02-10 01:25:32', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(143, '2025-02-10 01:25:38', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<x>'),
-	(144, '2025-02-10 01:25:38', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:x'),
-	(145, '2025-02-10 01:25:58', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<x>'),
-	(146, '2025-02-10 01:25:58', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:x'),
-	(147, '2025-02-10 01:25:59', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(148, '2025-02-10 01:26:11', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<x>'),
-	(149, '2025-02-10 01:26:11', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:x'),
-	(150, '2025-02-10 01:29:13', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(151, '2025-02-10 01:29:18', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<x>'),
-	(152, '2025-02-10 01:29:18', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:x'),
-	(153, '2025-02-10 01:30:08', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<x>'),
-	(154, '2025-02-10 01:30:08', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:x'),
-	(155, '2025-02-10 01:30:09', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(156, '2025-02-10 01:30:13', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<x>'),
-	(157, '2025-02-10 01:30:14', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:x'),
-	(158, '2025-02-10 01:32:29', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(159, '2025-02-10 01:32:33', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<x>'),
-	(160, '2025-02-10 01:32:33', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:x'),
-	(161, '2025-02-10 01:35:12', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(162, '2025-02-10 01:35:15', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<x>'),
-	(163, '2025-02-10 01:35:15', 'User', 'Save', 'Add Successful: memberId:0, UserName:x'),
-	(164, '2025-02-10 01:35:15', 'User', 'Destroy', 'DESTROY member object: memberId:0, UserName:x'),
-	(165, '2025-02-10 01:37:09', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(166, '2025-02-10 01:37:15', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<q>'),
-	(167, '2025-02-10 01:37:15', 'User', 'Save2', 'memberId:, UserName:q'),
-	(168, '2025-02-10 01:37:15', 'User', 'Save', 'Add Successful: memberId:0, UserName:q'),
-	(169, '2025-02-10 01:37:15', 'User', 'Destroy', 'DESTROY member object: memberId:0, UserName:q'),
-	(170, '2025-02-10 01:37:59', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(171, '2025-02-10 01:38:05', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<s>'),
-	(172, '2025-02-10 01:38:05', 'User', 'Save2', 'hashed:$2y$10$kLDQ2VJfI4Cm.HMI/d3GnOUbD82CM4RX8FnslkW.v8TU/mRPodpG., non:s'),
-	(173, '2025-02-10 01:38:05', 'User', 'Save', 'Add Successful: memberId:0, UserName:s'),
-	(174, '2025-02-10 01:38:05', 'User', 'Destroy', 'DESTROY member object: memberId:0, UserName:s'),
-	(175, '2025-02-10 01:39:49', 'User', 'Destroy', 'DESTROY member object: memberId:, UserName:'),
-	(176, '2025-02-10 01:39:56', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<x>'),
-	(177, '2025-02-10 01:39:56', 'User', 'Save2', 'hashed:$2y$10$fxfRBuy86gjwORnKHC4P4OhsD7m7CjdZqCaqLDlEbRe7zupA6vNp., non:x'),
-	(178, '2025-02-10 01:39:56', 'User', 'Save', 'Add Successful: memberId:0, UserName:x'),
-	(179, '2025-02-10 01:39:56', 'User', 'Destroy', 'DESTROY member object: memberId:0, UserName:x'),
-	(180, '2025-02-10 01:40:13', 'User', 'Login', 'UserName:x: - Failed Login: Invalid Password'),
-	(181, '2025-02-10 01:40:13', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(182, '2025-02-10 01:40:55', 'User', 'Login', 'MemberId:14, UserName:x - Successful login.'),
-	(183, '2025-02-10 01:40:55', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(184, '2025-02-10 01:40:57', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(185, '2025-02-10 01:41:10', 'User', 'Save2', 'hashed:$2y$10$hfkfZYBRMWmq4s8JxEoZm.UlmAWI/Uz3.hBGFY9aMAqkR8XKrtjW2, non:x'),
-	(186, '2025-02-10 01:41:10', 'User', 'Save', 'Update Successful: memberId:14, UserName:x'),
-	(187, '2025-02-10 01:41:11', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(188, '2025-02-10 01:41:29', 'User', 'Save2', 'hashed:$2y$10$1lqS47PG3JYT9nUvAIG9MecX0UPD.5usJq/Py7v4WOrprRctKYa12, non:x'),
-	(189, '2025-02-10 01:41:29', 'User', 'Save', 'Update Successful: memberId:14, UserName:x'),
-	(190, '2025-02-10 01:41:29', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(191, '2025-02-10 01:41:39', 'User', 'logout', 'memberId:14, UserName:x - has logged out'),
-	(192, '2025-02-10 01:41:39', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(193, '2025-02-10 01:41:43', 'User', 'Login', 'MemberId:14, UserName:x - Successful login.'),
-	(194, '2025-02-10 01:41:43', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(195, '2025-02-11 00:06:07', 'User', 'Login', 'UserName:jimmy: - Failed Login: Invalid Password'),
-	(196, '2025-02-11 00:06:07', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(197, '2025-02-11 00:06:11', 'User', 'Login', 'UserName:jimmy: - Failed Login: Invalid Password'),
-	(198, '2025-02-11 00:06:11', 'User', 'Destroy', 'DESTROY member object: memberId:6, UserName:jimmy'),
-	(199, '2025-02-11 00:06:48', 'User', 'Login', 'MemberId:14, UserName:x - Successful login.'),
-	(200, '2025-02-11 00:06:48', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(201, '2025-02-11 00:08:57', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(202, '2025-02-11 00:09:00', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(203, '2025-02-11 00:09:01', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(204, '2025-02-11 00:11:58', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(205, '2025-02-11 00:14:26', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(206, '2025-02-11 00:14:29', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(207, '2025-02-11 00:14:32', 'User', 'logout', 'memberId:14, UserName:x - has logged out'),
-	(208, '2025-02-11 00:14:32', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(209, '2025-02-11 00:14:36', 'User', 'Login', 'MemberId:14, UserName:x - Successful login.'),
-	(210, '2025-02-11 00:14:36', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(211, '2025-02-11 00:14:37', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(212, '2025-02-11 00:14:59', 'User', 'logout', 'memberId:14, UserName:x - has logged out'),
-	(213, '2025-02-11 00:14:59', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(214, '2025-02-11 00:16:04', 'User', 'Login', 'MemberId:14, UserName:x - Successful login.'),
-	(215, '2025-02-11 00:16:04', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
-	(216, '2025-02-11 00:16:06', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x');
+	(602, '2025-03-21 00:07:19', 'User', 'Login', 'MemberId:14, UserName:x - Successful login.'),
+	(603, '2025-03-21 00:07:20', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
+	(604, '2025-03-21 00:07:27', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
+	(605, '2025-03-21 00:07:37', 'User', 'logout', 'memberId:14, UserName:x - has logged out'),
+	(606, '2025-03-21 00:07:37', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
+	(607, '2025-03-21 00:09:39', 'User', 'Login', 'MemberId:14, UserName:x - Successful login.'),
+	(608, '2025-03-21 00:09:39', 'User', 'Destroy', 'DESTROY member object: memberId:14, UserName:x'),
+	(609, '2025-03-21 00:16:33', 'User', 'logout', 'memberId:14, UserName:x - has logged out'),
+	(610, '2025-03-21 00:18:13', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<jimmy>'),
+	(612, '2025-03-21 00:18:13', 'User', 'Save', 'Add Successful: memberId:0, UserName:jimmy'),
+	(613, '2025-03-21 00:18:44', 'User', 'Login', 'MemberId:18, UserName:jimmy - Successful login.'),
+	(614, '2025-03-21 00:25:26', 'User', 'Login', 'MemberId:18, UserName:jimmy - Successful login.'),
+	(615, '2025-03-21 00:34:23', 'User', 'logout', 'memberId:18, UserName:jimmy - has logged out'),
+	(616, '2025-03-21 00:35:50', 'User', 'Login', 'MemberId:14, UserName:x - Successful login.'),
+	(617, '2025-03-21 00:36:14', 'User', 'Save', 'Update Successful: memberId:14, UserName:x'),
+	(618, '2025-03-21 00:39:11', 'User', 'Save', 'Update Successful: memberId:14, UserName:x'),
+	(619, '2025-03-21 00:42:36', 'User', 'Save', 'Update Successful: memberId:14, UserName:x'),
+	(620, '2025-03-21 00:42:41', 'User', 'logout', 'memberId:14, UserName:x - has logged out'),
+	(621, '2025-03-21 00:42:44', 'User', 'Login', 'MemberId:14, UserName:x - Successful login.'),
+	(622, '2025-03-21 00:42:55', 'User', 'Delete', 'Delete Successful: memberId:14, UserName:x'),
+	(623, '2025-03-21 00:43:23', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<x>'),
+	(624, '2025-03-21 00:43:24', 'User', 'Save', 'Add Successful: memberId:0, UserName:x'),
+	(625, '2025-04-10 00:19:09', 'User', 'User Exists Check', 'Verified: User Does Not Exist:<u>'),
+	(626, '2025-04-10 00:19:09', 'User', 'Save', 'Add Successful: memberId:0, UserName:u'),
+	(627, '2025-04-10 00:19:17', 'User', 'Login', 'MemberId:20, UserName:u - Successful login.'),
+	(628, '2025-04-10 00:19:26', 'User', 'logout', 'memberId:20, UserName:u - has logged out'),
+	(629, '2025-04-10 00:19:35', 'User', 'Login', 'MemberId:20, UserName:u - Successful login.'),
+	(630, '2025-04-10 00:19:45', 'User', 'Save', 'Update Successful: memberId:20, UserName:u'),
+	(631, '2025-04-10 00:19:49', 'User', 'logout', 'memberId:20, UserName:u - has logged out'),
+	(632, '2025-04-10 00:19:55', 'User', 'Login', 'MemberId:20, UserName:u - Successful login.'),
+	(633, '2025-04-29 23:59:27', 'User', 'Login', 'MemberId:19, UserName:x - Successful login.'),
+	(634, '2025-04-30 00:04:33', 'User', 'logout', 'memberId:19, UserName:x - has logged out'),
+	(635, '2025-04-30 00:04:38', 'User', 'Login', 'MemberId:19, UserName:x - Successful login.'),
+	(636, '2025-05-01 04:23:30', 'User', 'Login', 'MemberId:19, UserName:x - Successful login.'),
+	(637, '2025-05-02 02:16:45', 'User', 'Login', 'MemberId:19, UserName:x - Successful login.'),
+	(638, '2025-05-04 23:49:00', 'User', 'Login', 'MemberId:19, UserName:x - Successful login.'),
+	(639, '2025-05-05 00:25:12', 'User', 'logout', 'memberId:19, UserName:x - has logged out'),
+	(640, '2025-05-07 01:46:32', 'User', 'Login', 'MemberId:19, UserName:x - Successful login.'),
+	(641, '2025-05-07 04:16:15', 'User', 'Login', 'MemberId:19, UserName:x - Successful login.'),
+	(642, '2025-05-07 04:27:17', 'User', 'Login', 'MemberId:19, UserName:x - Successful login.');
 
--- Dumping structure for table 12send8.members
+-- Dumping structure for table furi01db.cinemalocations
+DROP TABLE IF EXISTS `cinemalocations`;
+CREATE TABLE IF NOT EXISTS `cinemalocations` (
+  `locationId` int NOT NULL AUTO_INCREMENT,
+  `locationName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0',
+  `GPS` varchar(100) DEFAULT '0',
+  `address` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`locationId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table furi01db.cinemalocations: ~1 rows (approximately)
+INSERT INTO `cinemalocations` (`locationId`, `locationName`, `GPS`, `address`) VALUES
+	(1, 'Chatswood', '123 chatswood road', '123 chatswood road');
+
+-- Dumping structure for table furi01db.cinemas
+DROP TABLE IF EXISTS `cinemas`;
+CREATE TABLE IF NOT EXISTS `cinemas` (
+  `cinemaId` int NOT NULL AUTO_INCREMENT,
+  `locationId` int DEFAULT NULL,
+  `cinemaName` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`cinemaId`),
+  KEY `locationId` (`locationId`),
+  CONSTRAINT `locationId` FOREIGN KEY (`locationId`) REFERENCES `cinemalocations` (`locationId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table furi01db.cinemas: ~1 rows (approximately)
+INSERT INTO `cinemas` (`cinemaId`, `locationId`, `cinemaName`) VALUES
+	(1, 1, 'Cinema Alpha');
+
+-- Dumping structure for table furi01db.members
+DROP TABLE IF EXISTS `members`;
 CREATE TABLE IF NOT EXISTS `members` (
   `memberId` int NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL DEFAULT '',
@@ -259,20 +120,77 @@ CREATE TABLE IF NOT EXISTS `members` (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '',
   PRIMARY KEY (`memberId`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table 12send8.members: ~10 rows (approximately)
+-- Dumping data for table furi01db.members: ~4 rows (approximately)
 INSERT INTO `members` (`memberId`, `username`, `password`, `firstName`, `lastName`, `role`, `street`, `town`, `state`, `postcode`, `phone`, `email`) VALUES
-	(1, 'joe', 'bloggs', 'Joe', 'Bloggs', 'User', NULL, NULL, NULL, NULL, NULL, ''),
-	(2, 'admin', 'admin', NULL, NULL, 'Admin', NULL, NULL, NULL, NULL, NULL, ''),
-	(3, 'joe2', 'password', 'Joe', 'Smith', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-	(4, 'joe3', 'password', 'Joe', 'Jonaz', NULL, '4 High Street', NULL, NULL, NULL, NULL, ''),
-	(5, 'jake', 'jake', 'Jake', 'jrgetjkl', NULL, '38 jfklrg street', 'Horseville', 'nsw', '2094', '0401631121', 'jakey123@gmail.com'),
-	(6, 'jimmy', 'jimmy', '8LccuvVpyxH23lCljKzdT2M03SjVjXlzGfcRX3J5fbzk18RHc5sVBfTPX+c3qFLhrXsr2cXCGGakI2HibQBzCubLFpz1588jli0mk8S078goZOcE8lYcd4pICZj75sLL', '0t6ALwuJMlVYuzJXysLrgnnI1IMobj4tHYmKq0WTV/MQE2r0ca9Jd2iKykZg3nffvlUiU1DbvnWRQPLR8DQk8MNi55OD5PVz4yPMVlIDodlMjRMQ59w+/ask9nE9zlpk', NULL, 'nEjnRN851Ocrk7rlXq4hcd5MC8W+zx32JrgCy6wCxS1ei0G6UuDsqTzL111feHoTrY9aOpa4AQxz5tYGy6EtdIgun4YpJ1dWHhgqcNEiI9Ae8gMJ7wl2pMy7FmRU/Vqw', '855IyVpN26eLCFW/XNoeTrMbg95/fluAsTmgKyV49UJA4s/olxtvoqWFkxnzPt8aZyO4aTyvuAdxFAgnTGdd39Nsi38kt5iEDIQ28LPMa/a33VixQR2J4ZVeBQ+/2oQB', 'wBZt4/2AIo18C37ujfCBx6bXC5xWHo767SWjpP4JT1U+zTPOidEB6favKqiEzloi5ohKEVcbOjKTuQhn88bTq0bFXn7d05E9icZn83A/yeeF8X2S3xsD9g9i+2S16rrP', 'HkNM78z8is2J4MbbR9ZSw5TeGhfI2WfI/taALzdFU6dtUq6qN4QGB32P8k3kXmtBPUw+X35CA076nxJVhmE7pGHSmHm7oUTHIj0uvkwqheOXBDNg/cFB64SwbdHgbIxc', 'S0563bYgLf5KGDP5YfTJf7S3ew3V3AkYNcx8XBsWfbQ2YFRhZTegVV6U9H/5QJsDulpJ1Y3jqaqMKUHONUJECYHkz9RYfPOJwakiZMFMQsckjQ3srAZXWmOwIOMDA5uD', 'TDpmCKATmnGz0AbZZBbszdsjt+4FpzE2RodevcAFzKWkmjftwLqdvZ1mNWextQK0pCga80AqUrU86QX1plfdSJ8ENwR7AsRZ68bR/ie3ZR3J32IFlM35Q6FDwiKr6hayaaJ8OjXDqIyJX/mdYDAM1A=='),
-	(8, 'jack', 'jack', 'Jack', '', NULL, '29', 'Beecroft', 'NSW', '2079', '0401631121', 'jimmyfurini@gmail.com'),
-	(9, 'jeff', 'jeff', 'jeff', '', NULL, 'jeff', 'jeff', 'NSW', '2079', '0401631121', 'jimmyfurini@gmail.com'),
-	(10, 'john', 'john', 'John', '', NULL, '29', 'Beecroft', 'NSW', '2079', '0401631121', 'jimmyfurini@gmail.com'),
-	(14, 'x', '$2y$10$1lqS47PG3JYT9nUvAIG9MecX0UPD.5usJq/Py7v4WOrprRctKYa12', '6p+e2mmQTrHWlASYjmU0AcDWUfIhC0mS1ciK9TOHVCZoPdVXp8ByK6abwwkXsE/9Mk347QCNRvbqK9KIFtG51VsZIMfVQlyyrkMQF5CS4H/Q06muLlmqCqVyUBS6Rxo2', 'XN4WwY2u+OqJvezgQemUHffjway+EptUqN6KV7sZDcJBC25SGImHN2NPoZGKzE9Fi6LhipAA4fsLylT8J1GzsyC9kEeBJSGqM0K0B6GlBK8E2FNI6lp9YtVf4s/e+dzF', NULL, 'Sma5KdcuIjulWE9Kg4ucpdvrDMDajdfshvuSkHsCkmT0+UqkrLXGra1uYe58La9Ck7QP7Mguote57qmEW/3oSTrH2bqeGh6szeCcKrtwhJEixwOHZv3558QboTcEkakM', 'XZjhz5xxxenbwOqlI9660zmA3POCZys+DktLqVi4d/5WSqMx4hM/01QTNh8corIsIjQ1XtM4NH2sBS/DiORvtsuUBG6tiTC1j5QD59UO4t3EJsCFxuVDaFxYiiiwHmMr', 'z/DEyHTrRnUzwR0p+zqiKKaLZbYPJAaNfMpHaAkUhHLoSw3V158V1hAJj/jv8+WhylVA8Jz8L5W7wDyYa4TflCIPi131C42K3SmGxCM4/Rezv2z1DTLouJzezd/6EJ6U', 'gfJu7CTaHhaUtQlZXuqMNwQEVgCkY04NhUTM1N90RS758mAzY49/iFUc7nfPyCJnMlO8AAeO3wYHCVfVPuVfkB5+tlqjbu9nVw8DmZqLQitAm3Ruqa536FLbHcPBJN/0', '6LkSe0Ueu+U2oyxtI4e3+HmbiO3QHfbeupEhjIJ5hPT5qNTKsYxbk6NSjgUg5mPtgRJpEtQLQ29bP5SJsI+vMFIx2Z6+3UZwDiuc6hiVQ95Gal2BveWi+La9yAHV0NaI', 'jLaV1EFF5DUJEZsu7AC7K8Nt9qF8DVz0ngafjlaL3ssbCEeZpEezk8AuC7J/WTyIHDrG3XJoHKzFlEs5Y575ANvFZhEgXNZbFRRQkfmpNQZy8YTeomPEA5/cnVGXrlzBijOnCH6qReyc7Rv6hfQjbA==');
+	(15, 'attacker', '$2y$10$mjQDXnjF6Oi/DelIZIDNE.A4ouOGqpZJ/I3e4WeVzgdxQ4C.5vK5i', 'iU85H6oF8AiVCPzMkkdFD7Z2PaH6pn1Ox9qmERdycTB631VRyKHIN8UTwomHvkOlBl94hLv2G/iGQuUi/ttESrMmYTtVKIrKLFQnHOHs0C2d0r+uuLwuVqJxVk2DOXQH', 'wG5f53BVsEjPN+fyE5f0GudaMFNFGq/I0wbX27X8Hnw4oEBgfgBNKoCONNXMHmztFF+pNaEw7AyvNWuQYpoBOfWsdobA1+VE5I62DPS2/ydv2uzc3rxvh0j+GalfzuaT', 'custom', 'Dw5K/qhhlo5KEK+H4u6TDtHVbUOSk3WwUM+kvmmWtcbnbSz05G2fJCFyjPkE0DimVVG1PLCVNgz2Iemqo44x+nH19nRJDICqPcsnIvRHYlr6O38v/eM7rG77fzbquqqg', 'ftHzyKdRb+gHznZWyzzo2pnASJFaNDIUPz9PuC8/A/mmnS329qJDLB3RdbWeji7uxaCC0mFbNymVLR8x8/4dtNGDr/JB7vGsLOVDwM5mFhbVyD2PM5hY6leeZTkkcUFQ', '3/u0s/gOEKq/ycvvHcf7IYoM2Htyp73xcdD3OBTz7pmQaBjuQThnVGn/q+2Msdjd9UR6+ZQiwR3jgj4y/0MnKxzYL3c7g43ILthaNoKFKomjdBeSZDE8OvmsHsY8gCZn', '6/ED0l5dCAmPyhkkkS6k5qK5FPb2tpd8xd+dIhVNr/HgTzQwkb+vUCPSLSLihOpbmJvjvH/ItBLC2CIhDDHOfao2ny4VGExa7yl/FKVvcMvCEa8JUknBHkZg4bw8GyGe', 'eq5yBc8OicM2JgFSoObkykxWy2q3Trxona8Ibe+SIrTAKo3GQH1xsT/Gu6DDv/fUCxtIugvYEmbTOJ/AizoXCiVcTtyETmb0yEb+rI67rtTHZU5ohfx4zsq2x/vR9bqc', 'sAf50pbE3P+mS8S2afNMXJkzcwDH1HfEuJ+xi/bEiXovm00zTsiJaMslKvNlSzwJxw6M5tm3tXLy/eYhNCZK0Hz9czqVdIpFhqzXFIwco450E936JBWPwn9ArCw0/VMz'),
+	(18, 'jimmy', '$2y$10$z7DrvhHqkt.SlxbVMyRlS.5aavIJ95VT5uC2yeo5VuRj.jNYByaiq', 'NdgQqZss0leLXoR/Ch0tc8B75Rhbu4dxznvoED2Vi2LcWpUkYuxfzCyPos/KFjqvWSvFhy0ryMiCaW1iuhtX9m5VlYQ4USWjADHszwLrXtwNEQSLyjc6WozLO0erJZNa', '6MSt+gOgicivpWaUTkuqpDPcdV30HyN6F4O9fKXbpNzhZtjU73ZBx7BxLFMxq8KC3rdQ3Xv8TzQ6MwVsr27FqQqbyv5G99zUYFYNFd0cjuuXL3nFmOf3PXjT5OJXba84', NULL, '8zwsHNORxzFmF02G8nvsCoyi92/YbTifdVnv6G2onIbpegi7t4gsaXyEQUjYG6lf+WnTjArlADNyZ7qcKBZzJByL4GnG7DL714q3dLZLRyaRrGsdBLML/mNBYygdBPFW', 'XGP7l8NmJJlHXdHHJw08s9/YRwiGdyHld4Aq1JqK/OUDZnngtOD3alznp4IKdwsC78f3UzQYlFy5CLfD5KRe9YR3yBH49hPolxK+glap86hEnhUfxXxw4f/5jRtTjfOp', 'kNWBQJUB6t82b6VEnGCDTLPa5uAGvjvXRXoa3dKb3JuMj4XL6UZveZogjPKVAz8OHuNnXLRPB9WdHKxXyqt0VEIZOjE2Hx/wup8xcNcqEcvwvjoqMFIOHNYUn2xOoPFI', 'v+m7cFhZJgPsZ3oy6DJJpuTZC3rPJJOJjoYCpXK1NLPTDs4llqwNOCGlR/BUkRzCaeiqmjOCoz4wkIGoYdDW5FLN6D46Umu3jvVKpNs0aoPEgF+McHErzr1ViTg1S2UA', 'yDF5OsVAsXfxGGVPBdLag3nbDncuEC7SW96BukXB9IjuHTXTBL8tFugAM6fNG365qeqdyF7lrnVkOfdDsBJIcXU53SsMgKT/um2Hb4TT48AYcsNSJHmyrXYjVzJFaOBw', 'lX15qDT5dibxUuuGOp+vJFLNILXs3moAFiVD+auWqdX0ooPfODvblPvzNmJT6Y4c/+aR8vXkV4TCpgve5YRlqgng4sstskDHD6Jz++miulh3CxRjN3CYZnuBt/DZX0XhWh1IJtQg+2f7Hy+gEGW3Xw=='),
+	(19, 'x', '$2y$10$G7B3yujBBlnjGhC/LNyHjeuV5hTqNadMTSkSs6OQ10EDPlkjhTUpO', 'wgYR2kax2ykeXJxOHFoi3gkEH+h79BC8ff0uOd26Igvsi0scEAy3ibzMQiieiteUBiRvow+TmH0fx0qo20G/xzIil3q/IWxum5pAwrQebqQdx0wBD8nWA4IO0R1QmnIG', 'DkLAuN1IBQcFKYmJ3CoHBDWakY7x8tOUui8NCGNoUeEAtnl+Qc5mCxcY0575HKoS0AbKazPPT4qLLgxnadJ1uXLaNabrR36yuyKJI6wM34E5ndtrTnXZVsBEimoc/k/Q', NULL, '5iykfoz4lisDE/SkiWolI4e1qe6SzzXIgXhaCpldpWeG74CKsLlGFHIURKFn+Mz3qAo//Unb6P6VXwfiPA7EAJqBhd2peNkaiQOQ2TiWqaP02/m28/rrbIsVAvuemzoS', '5a7xR/DwseKuhQSi+mCgMZREnt5oXESe/DXpFG22e+6PFB0sOfVNg60jfBcqb2Oon8uiOM1RtD+ntcaO4uAfco5XD6blllHWnpcm0jbsXd8saVviNWUsZIQnwx8QoP5o', 'qNswLxvkgs910MNXj/TBrdrbbsLhmKoVntbJqmIxVYG/6FZNGC3uPVutEvEdx8XM3ANzIUNrbbB4cs3WaDetNkcF3zOoFYN2yoa4laCWwt3PtMQ9jwoEBo3n0+lRsojA', 'tyeF/JRBEFopgQP/Ylwb+mtiZkoFy6EFcB+sI2ezfyiDeveM0BMOoOLWDMYZB5Jo6aXU6EdYSWk5/bDlAPp51lTSfzulQjfv7qfyY1OD2qzVKNCmb2rixynBKl1Bl0pg', '6CwAPazm7mCxJ3Al3YanUkusQTp09nj14VBDvONQ3k86+88UN57ymPe/mnyTWHn0nq7yQpws/kPExL6XJRLQRgigjv9DDUyw4hA/npfJqF9/u/OSvpWWcOy0I3cziXpt', 'bTnIvC7Gx1+xX+xgd7yNoxc/XcOdevDpyWlHSsAKtoDNQ6yAjGfVm4+N7X2N5C7p4sntkK8M9Z0ESMba8wkUjwIgrYJGFnUdMeG705tt1hXm5PWUupyhzZpSe9Nt0ra9+NlVA6nXlU+7NTK0PsSuGg=='),
+	(20, 'u', '$2y$10$j71tS8mXcX9ymxav7YtnNO5VkdLWBpLqZHEhAoGhGbRyouDBMZZZG', 'JTGOIT7zUwJAeZEaLLOBYNYZ5RO7nNDBXJWx0il32nNAT40Bc6QdMpiOwHglE646wyeXab4YlJSFt3jgSc1L+rImrg7wMxTICWBLgstWrdbDtIoMFOIEmCwnFMGK7qJz', 'B/y2BrqUFCGYb05f/dVnvrJm4qlVDlc1g00EkV6wLpDLs6gS4MTXVQsr20nf3aEPGmaB3mLf51kE4zWAri1YCzY/b6hnX9wPus+pgVmTI/koCCw9vZOaMeUZBF/UYf1E', NULL, 'SsfEr5Zd6IXeSKxw+5ejVeFz3qhWlA9hjp67IT9PCvqzLgAW+N8VpGQHZzx3suF6mrAGwaqRuEwkulYZFOeckaH2ULc8a3jpzYQYmP5YI+48yOXnTZbNs3p/uf/cUNHc', 'sae1VyJ3f6zMwxh9RMDKKhoM+M0g2hvkCXgCyoTOdPUAumJ3ixxG6Wy8tv8fZWw6wYBCNhNewxE3rVKCyT/Dz0ljUg7UVZWqScyUR6j5ffugSRxKp5KUawSQPxfwRQ4u', 'i0W6FoHNwWNIZKwIAVYOQMM6GrsDXf94mfxSSoH2VyDI4m5BUVnk1EjHUQjLnofg2NL2XhpctsXa+CEbO9HRmcS29leScaHwKlfaAkNbjGmAMBvBIqz8PJBFQq71Frmy', 'BifCCjaIgn8+RzpdiCvwFg79FeOeMUXbeypag8NVyhyWZLH+3F4zBmFoq4ee1WGImBvObTLpJhB4B3vfcn67uq2RQ7ePqrOaqnbuldo/9lQzyYk0OHjrxj5TfClA1ewj', 'G5RD5AQZFxdKGaT5EXtPK03O+MTRGDFToYErKnO1dfLBqS48UyJ/NRryT+oPuuAYQ1m43aBsgMBlILVwSvE0sZLunRHJPo39LyiK33dSLvcm5SWvSinXfcrlTIZnoVAc', 'jkgDBnwNxxL1upVDDw/3WfXrxUX2SP/06KiqkLtg8RHIdB0dWgwoKjLWBnia1s1a7RJK+ptYvHu8DHZM+1fOoQef8QYZ11480QTgEyh8idPuawFO6Z/tcj/vQMEjbMjr');
+
+-- Dumping structure for table furi01db.movies
+DROP TABLE IF EXISTS `movies`;
+CREATE TABLE IF NOT EXISTS `movies` (
+  `movieId` int NOT NULL AUTO_INCREMENT,
+  `cinemaId` int DEFAULT NULL,
+  `movieName` varchar(50) DEFAULT NULL,
+  `posterFile` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `movieDescription` varchar(500) DEFAULT NULL,
+  `trailerName` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`movieId`),
+  KEY `cinemaId` (`cinemaId`),
+  CONSTRAINT `cinemaId` FOREIGN KEY (`cinemaId`) REFERENCES `cinemas` (`cinemaId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table furi01db.movies: ~0 rows (approximately)
+INSERT INTO `movies` (`movieId`, `cinemaId`, `movieName`, `posterFile`, `movieDescription`, `trailerName`) VALUES
+	(1, 1, 'A Minecraft Movie', 'https://cdn.eventcinemas.com.au/cdn/resources/movies/17992/images/largeposter.jpg', 'Trying to leave their troubled lives behind, twin brothers (Jordan) return to their hometown to start again, only to discover that an even greater evil is waiting to welcome them back.', '8B1EtVPBSMw');
+
+-- Dumping structure for table furi01db.orderitems
+DROP TABLE IF EXISTS `orderitems`;
+CREATE TABLE IF NOT EXISTS `orderitems` (
+  `orderItemId` int NOT NULL AUTO_INCREMENT,
+  `orderId` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`orderItemId`),
+  KEY `orderitem` (`orderId`),
+  CONSTRAINT `orderitem` FOREIGN KEY (`orderId`) REFERENCES `orders` (`orderId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table furi01db.orderitems: ~0 rows (approximately)
+
+-- Dumping structure for table furi01db.orders
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE IF NOT EXISTS `orders` (
+  `orderId` int NOT NULL AUTO_INCREMENT,
+  `memberId` int NOT NULL DEFAULT '0',
+  `cost` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`orderId`),
+  KEY `memberorder` (`memberId`),
+  CONSTRAINT `memberorder` FOREIGN KEY (`memberId`) REFERENCES `members` (`memberId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table furi01db.orders: ~0 rows (approximately)
+
+-- Dumping structure for table furi01db.sessions
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `sessionId` int NOT NULL AUTO_INCREMENT,
+  `movieId` int DEFAULT NULL,
+  `cinemaId` int DEFAULT NULL,
+  `time` time DEFAULT NULL,
+  `seatCost` float DEFAULT NULL,
+  PRIMARY KEY (`sessionId`),
+  KEY `movieId` (`movieId`),
+  KEY `cinemaId2` (`cinemaId`),
+  CONSTRAINT `cinemaId2` FOREIGN KEY (`cinemaId`) REFERENCES `cinemas` (`cinemaId`),
+  CONSTRAINT `movieId` FOREIGN KEY (`movieId`) REFERENCES `movies` (`movieId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table furi01db.sessions: ~1 rows (approximately)
+INSERT INTO `sessions` (`sessionId`, `movieId`, `cinemaId`, `time`, `seatCost`) VALUES
+	(1, 1, 1, '10:24:42', 20),
+	(2, 1, 1, '09:59:27', 19);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

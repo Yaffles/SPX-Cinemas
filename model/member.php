@@ -100,9 +100,10 @@ CLASS Member EXTENDS Database {
     
     }
     public function __destruct() {
-        $entry = "DESTROY member object: memberId:".$this->getMemberId().", UserName:".$this->getUserName();
-        $action = "Destroy";
-        $this->log(action:$action,entry:$entry);
+        // no need to log destruction
+        // $entry = "DESTROY member object: memberId:".$this->getMemberId().", UserName:".$this->getUserName();
+        // $action = "Destroy";
+        // $this->log(action:$action,entry:$entry);
         // echo("Destroying Member object");
     }
 
