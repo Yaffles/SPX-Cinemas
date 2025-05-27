@@ -491,3 +491,96 @@ dialog button:last-of-type:hover {
         padding: 1.5rem;
     }
 }
+
+.basketItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1rem;
+    gap: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+}
+
+.basketLeft {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.basketLeft img {
+    width: 100px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.basketLeft h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    word-break: break-word;
+}
+
+.basketLeft h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.basketInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.basketRight {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.basketRight input[type="number"] {
+    width: 60px;
+    padding: 0.25rem;
+}
+
+.basketRight p {
+    margin: 0;
+}
+
+.basketRight form {
+    margin: 0;
+    display: inline-block;
+}
+
+.btn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+#updateForm {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}

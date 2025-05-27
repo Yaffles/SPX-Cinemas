@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const sessions = document.querySelectorAll('.session-option');
     const seatsInput = document.getElementById('seats');
 
+    sessions[0].classList.add('selected'); // Default select the first session
+
     sessions.forEach(session => {
         session.addEventListener('click', () => {
             // Remove 'selected' from all

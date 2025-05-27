@@ -164,7 +164,7 @@ CLASS Movie EXTENDS Database {
                 $movies[] = $movie;
             }
         }
-        RETURN $movies;
+        return $movies;
 
     }
 

@@ -107,7 +107,7 @@ CLASS Cinema EXTENDS Database {
             $results = $this->query($sql,[$this->getCinemaId()]);
 
             FOREACH($results AS $result) {
-                $numRows    = $result['numRows']; //num_rows;
+                $numRows = $result['numRows']; //num_rows;
             }
             $exists = $numRows==1;
         }

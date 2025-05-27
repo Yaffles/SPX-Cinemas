@@ -35,6 +35,7 @@ CLASS Session EXTENDS Database {
         $this->setTime($time);
         $this->setSeatCost($seatCost);
 
+
         // Only attempt to get full data from DB if dbGet is true and ID exists
         IF ($this->getSessionId() && $dbGet) {
             $this->getSession(); // load from database
@@ -72,6 +73,13 @@ CLASS Session EXTENDS Database {
 
     public function getSeatCost(): ?float {
         return $this->seatCost;
+    }
+
+    public function getTotalCost(int $seats): ?float {
+        if ($this->seatCost === null) {
+            return null;
+        }
+        return $this->seatCost * $seats;
     }
 
     // SET Methods
@@ -140,22 +148,26 @@ CLASS Session EXTENDS Database {
      */
     public static function loadSessions(?Cinema $cinema=null, ?Movie $movie=null ) : array {
         $sessions = [];
-        $sql = "SELECT sessionId, cinemaId, movieId, time, seatCost FROM ".self::$tableName;
+        $sql = "SELECT sessionId, cinemaId, movieId, time, seatCost FROM " . self::$tableName;
+
         $params = [];
-        IF ($cinema) {
+        if ($cinema && $movie) {
+            $sql .= " WHERE cinemaId = ? AND movieId = ?";
+            $params[] = $cinema->getCinemaId();
+            $params[] = $movie->getMovieId();
+        } elseif ($cinema) {
             $sql .= " WHERE cinemaId = ?";
             $params[] = $cinema->getCinemaId();
-        } ELSE IF ($movie) {
+        } elseif ($movie) {
             $sql .= " WHERE movieId = ?";
             $params[] = $movie->getMovieId();
         } else {
-             // Handle case where neither cinema nor movie is provided, maybe return empty array or load all?
-             // For now, let's assume at least one is provided based on the use case.
-             return [];
+            // Optional: return empty if neither is provided
+            return [];
         }
 
         // echo("Load Sessions: ".$sql." ".implode(',', $params)."<br/>");
-
+        $sql .= " ORDER BY time";
         $db = new Database();
         $results = $db->query($sql,$params); // Pass parameters as an array
         FOREACH($results AS $result) {

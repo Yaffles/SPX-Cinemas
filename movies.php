@@ -42,7 +42,8 @@ $locs = CinemaLocation::loadCinemaLocations();
                     $movies = $cinema->getMovies();
                     if ($movies) {
                     foreach($movies as $movie) {
-                        $sessions = $movie->getSessions();
+                        // call static method session.loadSessions() to get sessions for the movie
+                        $sessions = Session::loadSessions(movie: $movie, cinema: $cinema);
                         
                         ?>
                         <movie>
@@ -62,17 +63,21 @@ $locs = CinemaLocation::loadCinemaLocations();
                                     </div>
                                     <div id="popupform">
                                         <h4>Sessions</h4>
-                                        <?php foreach ($sessions as $index => $session): ?>
-                                            <h5 class="seatCost session-option" sessionId="<?= htmlspecialchars($session->getSessionId()) ?>" cost="<?= htmlspecialchars($session->getSeatCost()) ?>" data-index="<?= $index ?>">
+                                        <?php foreach ($sessions as $index => $session) { ?>
+
+                                            <h5 class="seatCost session-option <?php if ($index==0) echo(" selected")  ?>" sessionId="<?= htmlspecialchars($session->getSessionId())?>"  cost="<?= htmlspecialchars($session->getSeatCost()) ?>" data-index="<?= $index ?>">
                                                 <?= htmlspecialchars($session->getTime()) ?>: $<?= htmlspecialchars($session->getSeatCost()) ?>
                                             </h5>
 
-                                        <?php endforeach; ?>
+                                        <?php } ?>
                                         <h4>Book Now</h4>
                                         <form id="popupForm" action="basket.php" method="post">
                                         <input type="hidden" name="movieId" value="<?php echo($movie->getMovieId()); ?>">
                                         <input type="hidden" name="cinemaId" value="<?php echo($cinema->getCinemaId()); ?>">
-                                        <input type="hidden" name="sessionId"  id="sessionId" value="">
+                                        <input type="hidden" name="sessionId"  id="sessionId" value="<?php echo($sessions[0]->getSessionId())?>" required>
+                                        <input type='hidden' name='_method' value='POST'>
+                                        <label for="date">Date:</label>
+                                        <input type="date" id="date" name="date" required>
                                         <label for="seats">Number of Seats:</label>
                                         <input id="seats" name="seats" type="number" min="1" max="10" value="1" required>
 
@@ -94,9 +99,10 @@ $locs = CinemaLocation::loadCinemaLocations();
                         
 
                         
+                    <?php
+                    } ?>
                     </movies>
                     <?php
-                    }
                     }
                     
                 }

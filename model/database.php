@@ -183,7 +183,16 @@ class Database {
         $stmt->close(); // Close the statement
 
         return $data; // Return the fetched data as an array of associative arrays
-    } else {
+    } 
+    // for INSERT
+    elseif (stripos(trim($sql), 'INSERT') === 0) {
+        // For INSERT, get the last inserted ID
+        $lastId = $stmt->insert_id;
+        $stmt->close(); // Close the statement
+
+        return $lastId; // Return the last inserted ID
+    }
+    else {
         // For INSERT, UPDATE, DELETE, etc., return the number of affected rows
         $affectedRows = $stmt->affected_rows;
         $stmt->close(); // Close the statement
