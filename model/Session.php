@@ -134,7 +134,7 @@ CLASS Session EXTENDS Database {
                 FOREACH($results AS $result) {
                     // When creating the Cinema object here, pass dbGet: False
                     // This prevents the Cinema constructor from immediately trying to load sessions
-                    $this->setCinema(new Cinema(cinemaId: (int) $result['cinemaId'], dbGet: False));
+                    $this->setCinema(new Cinema(cinemaId: (int) $result['cinemaId'], dbGet: True));
                     $this->setMovie(new Movie(movieId:$result['movieId'])); // Assuming Movie doesn't cause recursion
                     $this->setTime($result['time']);
                     $this->setSeatCost($result['seatCost']);

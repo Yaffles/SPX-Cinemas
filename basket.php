@@ -23,7 +23,6 @@ IF ($method=="POST") {
     
     
     
-        $message = "Invalid Login, Try Again";
     
     
         // create a basket

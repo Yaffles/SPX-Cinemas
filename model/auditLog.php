@@ -16,6 +16,7 @@ class AuditLog extends Database {
      * @return bool True on success, False on failure
      */
     public function addLog($entity, $action, $entry) {
+        echo "Adding log entry: Entity: $entity, Action: $action, Entry: $entry\n"; // Debugging output  TODO get rid of
         try {
             $sql = "INSERT INTO {$this->tableName} (entity, action, entry) VALUES (?, ?, ?)";
             $stmt = $this->getConn()->prepare($sql);

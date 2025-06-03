@@ -160,7 +160,7 @@ CLASS Cinema EXTENDS Database {
     // BUSINESS METHODS
 
     public function display() {
-        echo("Cinema: (".$this->getCinemaId().") ".$this->getCinemaName()." at ".$this->getCinemaLocation()->getLocationName()."<br/>");
+        echo("Cinema: (".$this->getCinemaId().") ".$this->getCinemaName()." at <br/>");
         // You might want to loop through sessions here and display them
         // foreach ($this->getSessions() as $session) {
         //     $session->display(); // Assuming Session class has a display method

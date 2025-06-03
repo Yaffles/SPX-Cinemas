@@ -4,6 +4,7 @@ require_once("Database.php");
 require_once("Session.php");
 require_once("member.php");
 require_once("BasketItems.php");
+require_once("auditLog.php");
 
 require_once("BookingItems.php");
 require_once("Booking.php");
@@ -13,6 +14,8 @@ CLASS Basket EXTENDS Database {
     private $memberId = null;
     private ?array $basketItems = [];
     private float $totalCost = 0.0;
+
+    private $auditLog;
 
     /**
      * Constructor.
@@ -25,6 +28,7 @@ CLASS Basket EXTENDS Database {
         bool $dbGet = True
     ) {
         parent::__construct(); // gets a database connection
+        $this->auditLog = new AuditLog();
 
         if ($memberId) {
             $this->setMemberId($memberId);
@@ -166,6 +170,13 @@ CLASS Basket EXTENDS Database {
 
         $this->basketItems[] = $basketItem;
         $this->setTotalCost($this->getTotalCost() + $basketItem->getTotalCost());
+
+
+        $this->auditLog->addLog(
+            entity: "Basket",
+            action: "Add Item",
+            entry: "Added sessionId {$sessionId} at {$session->getCinema()->getCinemaName()} with {$seats} seats to basket for memberId {$this->getMemberId()}" //TODO add cinema and mabye user name
+        );
         return 0;
     }
 
@@ -181,6 +192,12 @@ CLASS Basket EXTENDS Database {
                 $this->setTotalCost($this->getTotalCost() - $basketItem->getTotalCost());
                 // delete it from the database
                 $basketItem->delete();
+
+                $this->auditLog->addLog(
+                    entity: "Basket",
+                    action: "Remove Item",
+                    entry: "Removed sessionId {$sessionId} from basket for memberId {$this->getMemberId()}"
+                );
                 return 0;
             }
         }
@@ -199,6 +216,12 @@ CLASS Basket EXTENDS Database {
                 $this->setTotalCost($this->getTotalCost() + $basketItem->getTotalCost());
                 // update it in the database
                 $basketItem->save();
+
+                $this->auditLog->addLog(
+                    entity: "Basket",
+                    action: "Update Item",
+                    entry: "Updated sessionId {$sessionId} with {$seats} seats and total cost {$totalCost} for memberId {$this->getMemberId()}"
+                );
                 return 0;
             }
         }
@@ -235,8 +258,17 @@ CLASS Basket EXTENDS Database {
             // delete it from the database
             $basketItem->delete();
         }
+
+        $this->auditLog->addLog(
+            entity: "Basket",
+            action: "Checkout",
+            entry: "Checked out basket for memberId {$this->getMemberId()} () with total cost {$this->getTotalCost() } and bookingId {$booking->getBookingId()}"
+        );
+
         $this->basketItems = [];
         $this->setTotalCost(0);
+
+        
         return 0;
     }
 
