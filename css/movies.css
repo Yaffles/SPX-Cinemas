@@ -1,0 +1,425 @@
+/* === Location Filter Styles === */
+
+#locationFilterContainer {
+    text-align: center;
+}
+
+#locationFilter {
+    appearance: none;
+    background-color: #ffffff;
+    color: #2c3e50;
+    border: 1px solid #ccc;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
+    margin-bottom: 2rem;
+    cursor: pointer;
+}
+
+#locationFilter:hover {
+    border-color: #007bff;
+}
+
+#locationFilter:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    border-color: #007bff;
+}
+
+label[for="locationFilter"] {
+    font-weight: 600;
+    color: #34495e;
+    font-size: 1.1rem;
+    margin-right: 1rem;
+}
+
+
+.location-name {
+    font-weight: 100;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-left: 3rem;
+}
+
+
+
+/* === UPDATED Styles for Movie Listing Page === */
+
+
+/* Overall Page Title */
+maincontent > h1 {
+    text-align: center;
+    color: #2c3e50; /* Match header color */
+    margin-bottom: 2.5rem;
+    font-size: 2.5rem;
+    font-weight: 600;
+    border-bottom: 2px solid #bdc3c7; /* Subtle underline */
+    padding-bottom: 0.5rem;
+    display: inline-block; /* Center the border */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Styling for Location Blocks */
+locations > div {
+    margin-bottom: 3rem; /* Space between location blocks */
+    background-color: #ffffff; /* White background for location sections */
+    padding: 1.5rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+    border: 1px solid #e7eaf0; /* Very light border */
+}
+
+locations h2 { /* Location Name */
+    color: #34495e; /* Darker blue */
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0; /* Separator line */
+}
+
+locations h3 { /* Cinema Name */
+    color: #e74c3c; /* Accent color (adjust as needed) */
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+/* Movie Grid Container */
+movies {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem; /* Space between movie cards */
+    padding-top: 1rem; /* Space below cinema name */
+}
+
+/* Individual Movie Card Wrapper (<movie>) */
+movie {
+    /* This is now just a container, remove direct background/padding */
+    position: relative; /* Needed for potential absolute positioning inside if desired */
+}
+
+/* Trigger Button (Replaces visual card) */
+movie > button {
+    display: block; /* Fill the container */
+    width: 100%;
+    padding: 0; /* Remove default button padding */
+    border: 1px solid #ebebeb; /* Border for the card effect */
+    background-color: #f8f9fa; /* Background for the card effect */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    cursor: pointer;
+    text-align: left; /* Reset default button text alignment */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit; /* Use body font */
+}
+
+movie > button:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Movie Title inside Button */
+movie > button h4 {
+    background-color: #34495e;
+    color: white;
+    font-size: 1.25rem;
+    margin: 0;
+    padding: 0.8rem 1rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Movie Poster Image Container inside Button */
+movie > button div {
+    line-height: 0; /* Prevent extra space below image */
+}
+
+/* Movie Poster Image inside Button */
+movie > button img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 450px; /* Adjust as needed */
+    object-fit: contain; /* Changed from cover for potentially varying aspect ratios */
+    /* border-bottom: 1px solid #ddd; -- Not needed if image is last element */
+}
+
+/* --- DIALOG (POPUP) STYLES --- */
+
+dialog {
+    border: none; /* Remove default border */
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    max-width: 1400px; /* Max width of popup */
+    width: 85%; /* Responsive width */
+    margin: auto; /* Helps centering */
+    background-color: #ffffff;
+    position: relative; /* For close button positioning */
+    max-height: 85vh; /* Limit height and allow scrolling */
+    overflow-y: auto; /* Enable vertical scroll if content overflows */
+    position: fixed;
+    gap: 1.5rem; /* Spacing between elements inside dialog */
+}
+
+#popupdiv {
+    display: flex; /* Use flexbox for layout inside */
+    flex-direction: row;
+    gap: 5rem;
+}
+
+#popupInfo {
+    display: flex; /* Use flexbox for layout inside */
+    flex-direction: column;
+    gap: 1rem; /* Space between elements */
+}
+#popupForm {
+    display: flex; /* Use flexbox for layout inside */
+    flex-direction: column;
+    gap: 1rem; /* Space between elements */
+}
+
+/* Style the backdrop when the dialog is open */
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px); /* Optional: adds a blur effect */
+}
+
+/* Movie Description inside Dialog */
+dialog div:first-of-type { /* Targets the first div (description) */
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+    border-bottom: 1px solid #eee; /* Separator line */
+    padding-bottom: 1rem;
+}
+
+/* Trailer Container inside Dialog */
+dialog div:nth-of-type(2) { /* Targets the second div (iframe container) */
+     margin: 0 auto; /* Center the container if needed */
+     width: 100%;
+     max-width: 560px; /* Optional: Limit trailer width */
+}
+
+/* Trailer Iframe inside Dialog */
+dialog iframe {
+    display: block;
+    width: 100%; /* Make iframe responsive */
+    aspect-ratio: 16 / 9; /* Maintain video aspect ratio */
+    height: auto;
+    border: none; /* Remove iframe border */
+    border-radius: 5px; /* Optional: slightly rounded corners */
+}
+
+/* Session Info Container (Optional but recommended for layout) */
+/* If you wrap the h5 tags in a div like <div class="session-info">...</div> */
+dialog .session-info {
+    display: flex;
+    flex-wrap: wrap; /* Allow badges to wrap on smaller screens */
+    gap: 0.8rem;
+    justify-content: center; /* Center the badges */
+    padding-top: 1rem;
+    border-top: 1px solid #eee; /* Separator line */
+}
+
+/* Session Info Badges (h5) inside Dialog */
+dialog h5 {
+    font-size: 0.95rem;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    margin: 0; /* Remove default margins */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    flex-shrink: 0; /* Prevent badges from shrinking too much */
+}
+
+dialog h5.sessionTime {
+    background-color: #e74c3c; /* Accent color */
+}
+
+
+.session-option {
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    padding: 8px 12px;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    color: #333;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+}
+
+.session-option:hover {
+    background-color: #ddd;
+}
+
+.session-option.selected {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    border-color: #0056b3;
+}
+
+/* Close Button inside Dialog */
+/* Targets the last button inside the dialog */
+dialog button:last-of-type {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 0.8rem 1.5rem;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    font-weight: 500;
+    z-index: 1000; /* Ensure it's above other elements */
+}
+
+dialog button:last-of-type:hover {
+    background-color: rgb(169, 0, 0);
+}
+
+
+/* === Responsive Design Adjustments (Review and Adjust as Needed) === */
+@media (max-width: 1200px) {
+    movies {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    maincontent {
+        padding: 2rem 1rem;
+    }
+     movies {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    dialog {
+        max-width: 90%; /* Allow dialog to be wider on tablets */
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+}
+
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8rem;
+        letter-spacing: 3px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    nav li a {
+        justify-content: center;
+        padding: 0.5rem 1rem;
+    }
+
+    maincontent {
+        padding: 1.5rem 1rem;
+         margin: 1rem auto;
+    }
+
+    maincontent > h1 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    locations > div {
+        padding: 1rem 1.5rem;
+    }
+
+     movies {
+        /* Switch to 2 columns or adjust minmax */
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+    }
+
+    /* Adjust movie card button styles if needed */
+    movie > button h4 {
+        font-size: 1.1rem;
+        padding: 0.6rem 0.8rem;
+    }
+
+    /* Adjust Dialog styles for smaller screens */
+    dialog {
+        padding: 1rem;
+        gap: 0.8rem;
+         max-height: 90vh; /* Allow slightly more height */
+    }
+    dialog div:first-of-type { /* Description */
+        font-size: 0.9rem;
+    }
+    dialog h5 { /* Session Badges */
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+    dialog .session-info { /* Session Container */
+        gap: 0.5rem;
+    }
+    dialog button:last-of-type { /* Close button */
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+
+
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 15px; /* Slightly smaller base font */
+    }
+    header h1 {
+        font-size: 1.6rem;
+        letter-spacing: 2px;
+    }
+    maincontent > h1 {
+        font-size: 1.8rem;
+    }
+     locations h2 {
+        font-size: 1.5rem;
+    }
+    locations h3 {
+        font-size: 1.3rem;
+    }
+
+    movies {
+        /* Stack to single column */
+        grid-template-columns: 1fr;
+        gap: 1.5rem; /* Increase gap for single column */
+    }
+
+ 
+
+    
+     dialog .session-info { /* Session Container */
+        justify-content: flex-start; /* Align badges left if wrapping */
+    }
+     dialog button:last-of-type { /* Close button */
+        align-self: center; /* Center button on small screens */
+        width: 80%;
+        text-align: center;
+    }
+
+
+    form.border {
+        padding: 1.5rem;
+    }
+}

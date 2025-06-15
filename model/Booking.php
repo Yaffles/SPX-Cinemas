@@ -207,7 +207,7 @@ CLASS Booking EXTENDS Database {
         $bookings = [];
 
         IF ($memberId) {
-            $sql = "SELECT bookingId, cost, bookingDate FROM bookings WHERE memberId = ? ORDER BY bookingDate DESC";       
+            $sql = "SELECT bookingId, cost, bookingDate FROM bookings WHERE memberId = ? ORDER BY bookingId DESC";       
             $db = new Database();
             $results = $db->query($sql, [$memberId]);
             foreach ($results as $result) {

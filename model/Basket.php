@@ -203,7 +203,7 @@ CLASS Basket EXTENDS Database {
         }
     }
 
-    public function updateItem(?int $sessionId, ?int $seats, ?float $totalCost) {
+    public function updateItem(?int $sessionId, ?int $seats) {
         if ($this->basketItems == null) {
             return 1; // no items in basket
         }
@@ -211,16 +211,19 @@ CLASS Basket EXTENDS Database {
         foreach ($this->basketItems as $index => $basketItem) {
             if ($basketItem->getSessionId() == $sessionId) {
                 // update it in the array
+                $originalCost = $basketItem->getTotalCost();
+
                 $basketItem->setSeats($seats);
                 $basketItem->calculateTotalCost();
-                $this->setTotalCost($this->getTotalCost() + $basketItem->getTotalCost());
+            
+                $this->setTotalCost($this->getTotalCost() + $basketItem->getTotalCost() - $originalCost);
                 // update it in the database
                 $basketItem->save();
 
                 $this->auditLog->addLog(
                     entity: "Basket",
                     action: "Update Item",
-                    entry: "Updated sessionId {$sessionId} with {$seats} seats and total cost {$totalCost} for memberId {$this->getMemberId()}"
+                    entry: "Updated sessionId {$sessionId} with {$seats} seats and total cost " .  $basketItem->getTotalCost() . " for memberId {$this->getMemberId()}"
                 );
                 return 0;
             }

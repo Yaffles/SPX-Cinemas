@@ -73,11 +73,6 @@ IF ($method=="POST") {
                     </div>
                 </div>
 
-                <div class="form-check m-3">
-                    <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" name="remember"> Remember me
-                    </label>
-                </div>
                 <div class="m-3">
                     <button type="submit" class="btn btn-primary m-auto">Submit</button>
                 </div>

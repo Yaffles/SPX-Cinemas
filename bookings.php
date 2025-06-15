@@ -1,9 +1,5 @@
 <?php
-/**
- * First Initialise Sessions by destroying previous content and restart
- */
-session_start();
-
+require(__DIR__.'\utilities\sessionCheck.php');
 require_once("model/member.php");
 require_once("model/Basket.php");
 require_once("model/Booking.php");
@@ -49,12 +45,11 @@ else {
     <?php
         require('header.php');
         require('nav.php');
-        
     ?>
 
     <maincontent>
         <h1>Bookings</h1>
-        <div class="border border-dark">
+        <div>
             <?php
                 IF (isset($message)) {
                     echo "<div class='alert alert-danger'>$message</div>";
@@ -90,11 +85,9 @@ else {
                                 echo "</div>";
                             }
                         } else {
-                            echo("<h2>No Bookings</h2>");
+                            echo("<h2 style='color: red;'>No Bookings</h2>");
+                        }
 
-                            return 0;
-                        }             
-                        
                     ?>
                 </div>
             </div>

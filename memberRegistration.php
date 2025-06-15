@@ -197,13 +197,15 @@ FUNCTION update($member) {
 <html>
     <head>
         <?php require('head.php');?>
+        <link rel="stylesheet" href="css/memberRegistration.css">
     </head>
     <body>
          <?php require('header.php'); ?>
          <?php require('nav.php'); ?>
          <maincontent>
-            <h1>Member Registration</h1>
-            <div class="container border border-dark">
+            <!-- if logged out member registeration else member details -->'
+            <h1><?php IF ($mode=="ADD") { echo("Member Registration"); } ELSE { echo("Member Details"); } ?></h1>
+            <div class="container">
                 <form class="" name="register" action="" method="POST">
                     <div class="row mt-3">
                         <div class="col">

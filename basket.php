@@ -1,9 +1,5 @@
 <?php
-/**
- * First Initialise Sessions by destroying previous content and restart
- */
-session_start();
-
+require(__DIR__.'\utilities\sessionCheck.php');
 require("model/member.php");
 require("model/Basket.php");
 
@@ -20,10 +16,6 @@ IF ($method=="POST") {
         $seats = $_POST["seats"];
         $totalCost = $_POST["totalCost"];
         $date = $_POST["date"];
-    
-    
-    
-    
     
         // create a basket
         $basket = new Basket(memberId: $member->getMemberId(), dbGet: True);
@@ -56,8 +48,9 @@ IF ($method=="POST") {
         $sessionId = $_POST["sessionId"];
         $seats = $_POST["seats"];
         $totalCost = $_POST["totalCost"];
+        // 
         $basket = new Basket(memberId: $member->getMemberId(), dbGet: True);
-        $retCode = $basket->updateItem($sessionId, $seats, $totalCost);
+        $retCode = $basket->updateItem($sessionId, $seats);
         SWITCH ($retCode) {
             CASE 0:
                 $message = "Item Updated";
@@ -91,7 +84,7 @@ else {
 
     <maincontent>
         <h1>Basket</h1>
-        <div class="border border-dark">
+        <div>
             <?php
                 IF (isset($message)) {
                     echo "<div class='alert alert-danger'>$message</div>";
@@ -104,68 +97,63 @@ else {
                     <?php
                         $items = $basket->getBasketItems();
                         if ($items) {
-                            foreach ($basket->getBasketItems() as $basketItem) {
+                            foreach ($items as $basketItem) {
                                 $date = $basketItem->getDate() ?? date("Y-m-d");
                                // convert from 20/05 to 20 May
                                 $date = date("d F", strtotime($date));
+                                ?>
+
+                                <div class='basketItem'>
+                                    <div class='basketLeft'>
+                                        <img src='<?= htmlspecialchars($basketItem->getPosterFile()) ?>' alt='<?= htmlspecialchars($basketItem->getMovieName()) ?>'>
+                                        <div class='basketinfo'>
+                                            <h2><?= htmlspecialchars($basketItem->getMovieName()) ?></h2>
+                                            <h3><?= htmlspecialchars($basketItem->getTime()) ?></h3>
+                                            <h2><?php //htmlspecialchars($basketItem->getCinemaName()) ?></h2>
+                                            <h2><?php //htmlspecialchars($basketItem->getLocationName()) ?></h2>
+                                            
+                                        </div> <!-- basketinfo -->
+                                    </div> <!-- basketLeft -->
+
+                                    <div class='basketRight'>
+                                        <form id='updateForm' method='POST' action='basket.php'>
+                                            <label for='seats'>Seats:</label>
+                                            <input name='seats' type='number' min='1' max='10' value='<?= htmlspecialchars($basketItem->getSeats()) ?>'>
+                                            <p>Total Cost: $<?= number_format($basketItem->getTotalCost(), 2) ?></p>
+                                            <input type='hidden' name='_method' value='UPDATE'>
+                                            <input type='hidden' name='sessionId' value='<?= htmlspecialchars($basketItem->getSessionId()) ?>'>
+                                            <input type='hidden' name='totalCost' value='<?= htmlspecialchars($basketItem->getTotalCost()) ?>'>
+                                            <button type='submit' class='btn btn-primary'>Update</button>
+                                        </form>
+
+                                        <form method='POST' action='basket.php'>
+                                            <input type='hidden' name='_method' value='DELETE'>
+                                            <input type='hidden' name='sessionId' value='<?= htmlspecialchars($basketItem->getSessionId()) ?>'>
+                                            <button type='submit' class='btn btn-danger'>Remove</button>
+                                        </form>
+                                    </div> <!-- basketRight -->
+
+                                </div> <!-- basketItem -->
                                 
+                                <?php } ?> <!-- end foreach -->
 
+                            <div class='basketTotal'>
+                                    <h2>Basket Cost: $<?= number_format($basket->getTotalCost(), 2) ?></h2>
+                                    <form method='POST' action='bookings.php'>
+                                        <input type='hidden' name='totalCost' value='<?= htmlspecialchars($basket->getTotalCost()) ?>'>
+                                        <input type='hidden' name='_method' value='POST'>
+                                        <button type='submit' class='btn btn-success'>Checkout</button>
+                                    </form>
+                            </div> <!-- basketTotal -->
 
-                            
-
-                                echo "<div class='basketItem'>";
-                                
-                                
-                                echo "<div class='basketLeft'>";
-                                    echo "<img src='" . $basketItem->getPosterFile() . "' alt='" . $basketItem->getMovieName() . "'>";
-                                    echo "<div class='basketinfo'>";
-                                        echo "<h2>" . $basketItem->getMovieName() . "</h3>";
-                                        echo "<h3>" . $date . " · " . $basketItem->getTime() . "</h3>";
-                                    echo "</div>"; // basketinfo
-                                echo "</div>"; // basketLeft
-                               
-
-                                echo "<div class='basketRight'>";
-
-
-                                    echo "<form id='updateForm' method='POST' action='basket.php'>";
-                                    echo "<label for='seats'>Seats:</label>";
-                                    echo "<input name='seats' type='number' value='" . $basketItem->getSeats() . "'>";
-                                    echo "<p>Total Cost: $" . number_format($basketItem->getTotalCost(), 2) . "</p>";
-                                    echo "<input type='hidden' name='_method' value='UPDATE'>";
-                                    echo "<input type='hidden' name='sessionId' value='" . $basketItem->getSessionId() . "'>";
-                                    echo "<input type='hidden' name='totalCost' value='" . $basketItem->getTotalCost() . "'>";
-                                    echo "<button type='submit' class='btn btn-primary'>Update</button>";
-                                    echo "</form>";
-
-                                    echo "<form method='POST' action='basket.php'>";
-                                    echo "<input type='hidden' name='_method' value='DELETE'>";
-                                    echo "<input type='hidden' name='sessionId' value='" . $basketItem->getSessionId() . "'>";
-                                    echo "<button type='submit' class='btn btn-danger'>Remove</button>";
-                                    echo "</form>";
-                                echo "</div>"; // basketRight
-
-                                echo "</div>";
-                            }
-                        } else {
-                            echo("<h2>No Items in Basket</h2>");
-
-                            return 0;
-                        }
-                        // total and confirm order
-                        echo "<div class='basketTotal'>";
-                        echo "<h2>Total Cost: $" . number_format($basket->getTotalCost(), 2) . "</h2>";
-                        echo "<form method='POST' action='bookings.php'>";
-                            echo "<input type='hidden' name='totalCost' value='" . $basket->getTotalCost() . "'>";
-                            echo "<input type='hidden' name='_method' value='POST'>";
-                            echo "<button type='submit' class='btn btn-success'>Checkout</button>";
-                        echo "</form>";     
-                        echo "</div>"; // basketTotal                  
-                        
-                    ?>
-                </div>
-            </div>
-        </div>
+                        <?php } else { ?>
+                            <div class='basketItem'>
+                                <h3>No Items in Basket</h3>
+                            </div>
+                        <?php } ?>
+                    </div> <!-- end row -->
+                </div> <!-- end basketContainer -->
+            </div> <!-- end basket -->
 
     </maincontent>
     <?php

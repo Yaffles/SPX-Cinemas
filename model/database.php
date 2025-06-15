@@ -14,7 +14,7 @@ class Database {
     public $dbPassword;
     public $dbServer;
     public $dbName;
-    public $conn;
+    private static $conn;  // Static variable to hold the connection instance accross all instances
     public $stmt;
 
     /**
@@ -24,20 +24,16 @@ class Database {
      * @param  type $dbserver    .
      * @return type A         return value summary.
      */
-    public function __construct($dbServer="spx-webtest-s01",$dbUser='FURI01', $dbPassword='FURI01',$dbName='furi01db')
-    {
-        // echo("New Database<br/>");
-        IF (!$this->conn) {
-            $dbServer = "localhost";
-            $this->setDbServer($dbServer);
-            $this->setDbUser($dbUser);
-            $this->setDbPassword($dbPassword);
-            $this->setDbName($dbName);
-            $this->connect();
-            //echo("Database: New connection<br/>");
-        } ELSE {
-            //echo("Database: Existing connection<br/>");
+    public function __construct($dbServer="spx-webtest-s01",$dbUser='FURI01', $dbPassword='FURI01',$dbName='furi01db') {
+        $dbServer = "localhost";
+        $this->setDbServer($dbServer);
+        $this->setDbUser($dbUser);
+        $this->setDbPassword($dbPassword);
+        $this->setDbName($dbName);
 
+        // Only connect if no connection exists yet
+        if (self::$conn === null) {
+            $this->connect();
         }
     }
 
@@ -85,8 +81,10 @@ class Database {
      * If it does no exist, the creates a database connection
      */
     public function getConn() {
-        $this->connect();
-        return $this->conn;
+        if (self::$conn === null) {
+            $this->connect();
+        }
+        return self::$conn;
     }
 
     /**
@@ -112,10 +110,10 @@ class Database {
     // 1. Prepare the statement
         // echo("QUERY FUNCTION: ".$sql.", ".$params[0]."<br/>");
 
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->getConn()->prepare($sql);
 
         if (!$stmt) {
-            echo("Error preparing statement: " . $conn->error);
+            echo("Error preparing statement: " . $this->getConn()->error);
             return false; // Indicate failure
         }
     // 2. Bind parameters (if any)
@@ -218,23 +216,16 @@ class Database {
      * Creates a database connection using MySQLi extension
      * PDO will work on 12 different database systems, whereas MySQLi will only work with MySQL databases.
      */
-    public function connect() {
-
-        $dbServer     = $this->getDbServer();
-        $dbUser     = $this->getDbUser();
-        $dbPassword = $this->getDbPassword();
-        $dbName     = $this->getDbName();
-
-        TRY {
-            // echo("connect to: ".$dbServer.",".$dbUser.",".$dbPassword.",".$dbName."<br/>");
-            $this->setConn(@new mysqli($dbServer, $dbUser, $dbPassword, $dbName));
-            // Check connection to dbserver is not working
-        }
-        CATCH(Exception $e) {
-            $this->setConn(@new mysqli("localhost", $dbUser, $dbPassword, $dbName));
-        }
-        IF ($this->conn->connect_error) {
-            die("Database: Failed to connect to MySQL: ".$this->conn->connect_error);
+    protected function connect()
+    {
+        self::$conn = new mysqli(
+            $this->dbServer,
+            $this->dbUser,
+            $this->dbPassword,
+            $this->dbName
+        );
+        if (self::$conn->connect_error) {
+            die("Database connection failed: " . self::$conn->connect_error);
         }
     }
 
@@ -254,11 +245,11 @@ class Database {
     //     }
     // }
     public function commit() {
-        $this->conn->commit();
+        $this->getConn()->commit();
     }
 
     public function close() {
-        $this->conn->close();
+        $this->getConn()->close();
         $this->setConn(null);
     }
 
