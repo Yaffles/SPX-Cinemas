@@ -7,8 +7,7 @@ require_once("BasketItems.php");
 require_once("BookingItems.php");
 
 CLASS Booking EXTENDS Database {
-
-    private $memberId = null;
+    private ?Member $member = null;
     
     private $bookingId = null;
     private float $cost = 0.0;
@@ -24,7 +23,7 @@ CLASS Booking EXTENDS Database {
      *
      */
     public function __construct(
-        ?int $memberId = null,
+        ?Member $member = null,
         ?int $bookingId = null,
         ?float $cost = null,
         ?string $bookingDate = null,
@@ -32,15 +31,15 @@ CLASS Booking EXTENDS Database {
     ) {
         parent::__construct(); // gets a database connection
 
-        if ($memberId) {
-            $this->setMemberId($memberId);
+        if ($member) {
+            $this->setMember($member);
         }
 
         $this->setBookingId($bookingId);
         $this->setCost($cost);
         $this->setBookingDate($bookingDate);
 
-        if ($dbGet and $memberId) {
+        if ($dbGet and $this->getMember()) {
             // fill in the rest of the variables from the database with one function for all
             $this->getBooking();
         }
@@ -57,8 +56,8 @@ CLASS Booking EXTENDS Database {
         return $this->bookingDate;
     }
 
-    public function getMemberId() {
-        return $this->memberId;
+    public function getMember() {
+        return $this->member;
     }
     public function getCost() {
         return $this->cost;
@@ -77,8 +76,8 @@ CLASS Booking EXTENDS Database {
         $this->bookingDate = $bookingDate;
     }
 
-    public function setMemberId($memberId) {
-        $this->memberId = $memberId;
+    public function setMember(?Member $member) {
+        $this->member = $member;
     }
 
     public function setCost($cost) {
@@ -107,30 +106,12 @@ CLASS Booking EXTENDS Database {
 
 
 
-    // Object Relational Mapping Methods
-    /**
-     * Check if this Session record exists in database
-     */
-    public function exists() {
-        $exists = False;
 
-        IF ($this->getMovieId()) {
-            $sql = "SELECT COUNT(*) AS numRows FROM ".self::$tableName." WHERE movieId = ?";
-
-            $results = $this->query($sql,[$this->getMovieId()]);
-
-            FOREACH($results AS $result) {
-                $numRows    = $result['numRows']; //num_rows;
-            }
-            $exists = $numRows==1;
-        }
-        RETURN $exists;
-    }
 
     public function save() {
 
         $sql = "INSERT INTO bookings (memberId, cost) VALUES (?, ?)";
-        $res = $this->query($sql, [$this->getMemberId(), $this->getCost()]);
+        $res = $this->query($sql, [$this->getMember()->getMemberId(), $this->getCost()]);
 
         IF ($res) {
             // If it's an insert, get the last inserted ID
@@ -151,14 +132,15 @@ CLASS Booking EXTENDS Database {
      * Get Movie from database based on movieId
      */
     public function getBooking() {
-        IF ($this->getMemberId()) {
+        IF ($this->getBookingId()) {
+            $this->setCost(0);
             $sql = "SELECT bookingItemId, sessionId, bookingId, seats, cost, date FROM bookingitems WHERE bookingId = ?";
             $results = $this->query($sql,[$this->getBookingId()]);
             FOREACH ($results AS $result) {
                 $bookingItem = new BookingItem(
                     bookingItemId: $result['bookingItemId'],
                     sessionId: $result['sessionId'],
-                    bookingId: $result['bookingId'],
+                    booking: $this,
                     seats: $result['seats'],
                     cost: $result['cost'],
                     date: $result['date'],
@@ -189,7 +171,7 @@ CLASS Booking EXTENDS Database {
 
         $BookingItem = new BookingItem(
             sessionId: $session->getSessionId(),
-            bookingId: $this->getBookingId(),
+            booking: $this,
             seats: $seats,
             date: $date,
             dbGet: False
@@ -202,16 +184,16 @@ CLASS Booking EXTENDS Database {
         return 0;
     }
 
-    public static function loadBookings(?int $memberId=null) : array {
+    public static function loadBookings(?Member $member=null) : array {
         $bookings = [];
 
-        IF ($memberId) {
+        IF ($member) {
             $sql = "SELECT bookingId, cost, bookingDate FROM bookings WHERE memberId = ? ORDER BY bookingId DESC";       
             $db = new Database();
-            $results = $db->query($sql, [$memberId]);
+            $results = $db->query($sql, [$member->getMemberId()]);
             foreach ($results as $result) {
                 $booking = new self(
-                    memberId: $memberId,
+                    member: $member,
                     bookingId: $result['bookingId'],
                     cost: $result['cost'],
                     bookingDate: $result['bookingDate'],

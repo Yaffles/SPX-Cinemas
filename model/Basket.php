@@ -9,8 +9,11 @@ require_once("auditLog.php");
 require_once("BookingItems.php");
 require_once("Booking.php");
 
+
+
 CLASS Basket EXTENDS Database {
-    private $memberId = null;
+    private ?Member $member = null;
+
     private ?array $basketItems = [];
     private float $totalCost = 0.0;
 
@@ -30,10 +33,10 @@ CLASS Basket EXTENDS Database {
         $this->auditLog = new AuditLog();
 
         if ($memberId) {
-            $this->setMemberId($memberId);
+            $this->member = new Member(memberId: $memberId, dbGet: True);
         }
 
-        if ($dbGet and $memberId) {
+        if ($dbGet and $this->getMember()) {
             // fill in the rest of the variables from the database with one function for all
             $this->getBasket();
         }
@@ -42,8 +45,8 @@ CLASS Basket EXTENDS Database {
     // GETS and SETS Methods
 
     // GET Methods
-    public function getMemberId() {
-        return $this->memberId;
+    public function getMember() {
+        return $this->member;
     }
     public function getTotalCost() {
         return $this->totalCost;
@@ -57,8 +60,8 @@ CLASS Basket EXTENDS Database {
     }
 
     // SET Methods
-    public function setMemberId($memberId) {
-        $this->memberId = $memberId;
+    public function setMember($member) {
+        $this->member = $member;
     }
 
     public function setTotalCost($totalCost) {
@@ -71,14 +74,14 @@ CLASS Basket EXTENDS Database {
      * Get Movie from database based on movieId
      */
     public function getBasket() {
-        IF ($this->getMemberId()) {
+        IF ($this->getMember()) {
             $sql = "SELECT basketItemId, sessionId, memberId, seats, cost, date FROM basketItems WHERE memberId = ?";
-            $results = $this->query($sql,[$this->getMemberId()]);
+            $results = $this->query($sql,[$this->getMember()->getMemberId()]);
             FOREACH ($results AS $result) {
                 $basketItem = new BasketItem(
                     basketItemId: $result['basketItemId'],
                     sessionId: $result['sessionId'],
-                    memberId: $result['memberId'],
+                    member: $this->getMember(),
                     seats: $result['seats'],
                     totalCost: $result['cost'],
                     date: $result['date'],
@@ -116,7 +119,7 @@ CLASS Basket EXTENDS Database {
 
         $basketItem = new BasketItem(
             sessionId: $session->getSessionId(),
-            memberId: $this->getMemberId(),
+            member: $this->getMember(),
             seats: $seats,
             date: $date,
             dbGet: False
@@ -131,7 +134,7 @@ CLASS Basket EXTENDS Database {
         $this->auditLog->addLog(
             entity: "Basket",
             action: "Add Item",
-            entry: "Added sessionId {$sessionId} at {$session->getCinema()->getCinemaName()} with {$seats} seats to basket for memberId {$this->getMemberId()}"
+            entry: "Added sessionId {$sessionId} at {$session->getCinema()->getCinemaName()} with {$seats} seats to basket for memberId {$this->getMember()->getMemberId()}"
         );
         return 0;
     }
@@ -152,7 +155,7 @@ CLASS Basket EXTENDS Database {
                 $this->auditLog->addLog(
                     entity: "Basket",
                     action: "Remove Item",
-                    entry: "Removed sessionId {$sessionId} from basket for memberId {$this->getMemberId()}"
+                    entry: "Removed sessionId {$sessionId} from basket for memberId {$this->getMember()->getMemberId()}"
                 );
                 return 0;
             }
@@ -179,7 +182,7 @@ CLASS Basket EXTENDS Database {
                 $this->auditLog->addLog(
                     entity: "Basket",
                     action: "Update Item",
-                    entry: "Updated sessionId {$sessionId} with {$seats} seats and total cost " .  $basketItem->getTotalCost() . " for memberId {$this->getMemberId()}"
+                    entry: "Updated sessionId {$sessionId} with {$seats} seats and total cost " .  $basketItem->getTotalCost() . " for memberId {$this->getMember()->getMemberId()}"
                 );
                 return 0;
             }
@@ -192,7 +195,7 @@ CLASS Basket EXTENDS Database {
         }
 
         $booking = new Booking(
-            memberId: $this->getMemberId(),
+            member: $this->getMember(),
             cost: $this->getTotalCost(),
             dbGet: False
         );
@@ -203,7 +206,7 @@ CLASS Basket EXTENDS Database {
             // update it in the array
             $bookingItem = new BookingItem(
                 sessionId: $basketItem->getSession()->getSessionId(),
-                bookingId: $booking->getBookingId(),
+                booking: $booking,
                 seats: $basketItem->getSeats(),
                 cost: $basketItem->getTotalCost(),
                 date: $basketItem->getDate(),
@@ -220,7 +223,7 @@ CLASS Basket EXTENDS Database {
         $this->auditLog->addLog(
             entity: "Basket",
             action: "Checkout",
-            entry: "Checked out basket for memberId {$this->getMemberId()} () with total cost {$this->getTotalCost() } and bookingId {$booking->getBookingId()}"
+            entry: "Checked out basket for memberId {$this->getMember()->getMemberId()} () with total cost {$this->getTotalCost() } and bookingId {$booking->getBookingId()}"
         );
 
         $this->basketItems = [];

@@ -98,8 +98,8 @@ $locs = CinemaLocation::loadCinemaLocations();
                                         <input id="seats" name="seats" type="number" min="1" max="10" value="1" required>
 
                                         <label>Total Cost:</label>
-                                        <span id="totalCost">$<?php echo number_format($session->getSeatCost(), 2); ?></span>
-                                        <input type="hidden" name="totalCost" value="<?php echo($session->getSeatCost()); ?>">
+                                        <span id="totalCost">$<?php echo number_format($sessions[0]->getSeatCost(), 2); ?></span>
+                                        <input type="hidden" name="totalCost" value="<?php echo($sessions[0]->getSeatCost()); ?>">
 
                                         <input type="submit" value="Book Now">
                                         </form>

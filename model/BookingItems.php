@@ -2,11 +2,12 @@
 
 require_once("Database.php");
 require_once("Session.php");
+require_once("Booking.php");
 
 CLASS BookingItem EXTENDS Database {
     // from db
+    private ?Booking $booking = null;
     private $bookingItemId = null;
-    private $bookingId = null;
     private $seats = null;
     private $cost = null;
     private $date = null;
@@ -25,7 +26,7 @@ CLASS BookingItem EXTENDS Database {
     public function __construct(
         ?int $bookingItemId = null,
         ?int $sessionId = null,
-        ?int $bookingId = null,
+        ?Booking $booking = null,
         ?int $seats = null,
         ?float $cost = null,
         ?string $date = null,
@@ -34,7 +35,10 @@ CLASS BookingItem EXTENDS Database {
         parent::__construct(); // gets a database connection
 
         $this->setBookingItemId($bookingItemId);
-        $this->setBookingId($bookingId);
+        if ($booking) {
+            $this->setBooking($booking);
+        }
+        
         $this->setSeats($seats);
         $this->setDate($date);
         $this->setCost($cost);
@@ -64,8 +68,8 @@ CLASS BookingItem EXTENDS Database {
         return $this->cost;
     }
 
-    public function getBookingId() {
-        return $this->bookingId;
+    public function getBooking() {
+        return $this->booking;
     }
 
     public function getSeats() {
@@ -85,8 +89,8 @@ CLASS BookingItem EXTENDS Database {
         $this->bookingItemId = $bookingItemId;
     }
 
-    public function setBookingId($bookingId) {
-        $this->bookingId = $bookingId;
+    public function setBooking(?Booking $booking) {
+        $this->booking = $booking;
     }
 
     public function setSeats($seats) {
@@ -144,13 +148,13 @@ CLASS BookingItem EXTENDS Database {
             // Update the existing record
             $sql = "UPDATE bookingItems SET sessionId = ?, bookingId = ?, seats = ?, cost = ?
                       WHERE bookingItemId = ?";
-            $params = [$this->getSession()->getSessionId(), $this->getBookingId(), $this->getSeats(), $this->getCost(), $this->getBookingItemId()];
+            $params = [$this->getSession()->getSessionId(), $this->getBooking()->getBookingId(), $this->getSeats(), $this->getCost(), $this->getBookingItemId()];
 
         } else {
             // Insert a new record
             $sql = "INSERT INTO bookingItems (sessionId, bookingId, seats, cost, date)
                       VALUES (?, ?, ?, ?, ?)";
-            $params = [$this->getSession()->getSessionId(), $this->getBookingId(), $this->getSeats(), $this->getCost(), $this->getDate()];
+            $params = [$this->getSession()->getSessionId(), $this->getBooking()->getBookingId(), $this->getSeats(), $this->getCost(), $this->getDate()];
         }
 
         // Execute the query

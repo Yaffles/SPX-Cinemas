@@ -1,13 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
     const sessions = document.querySelectorAll('.session-option');
-    const seatsInput = document.getElementById('seats');
+    const seatsInputs = document.querySelectorAll('#seats');
 
     sessions[0].classList.add('selected'); // Default select the first session
 
     sessions.forEach(session => {
         session.addEventListener('click', () => {
-            // Remove 'selected' from all
-            sessions.forEach(s => s.classList.remove('selected'));
+            // Remove 'selected' from all sessions only in the parent element
+            const parent = session.parentElement;
+            const siblingSessions = parent.querySelectorAll('.session-option');
+
+            siblingSessions.forEach(s => s.classList.remove('selected'));
             // Add 'selected' to the clicked one
             session.classList.add('selected');
 
@@ -21,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(`Input field: ${inputField.value}`);
 
             let seatCost = session.getAttribute('cost');
-            const totalCostDisplay = document.getElementById('totalCost');
+            const totalCostDisplay = session.parentElement.querySelector('#totalCost');
             let seats = document.getElementById('seats').value;
 
             let total = seatCost * seats;
@@ -30,18 +33,34 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // for seats input change
-    seatsInput.addEventListener('input', () => {
-        console.log('Seats input changed');
-        const selectedSession = document.querySelector('.session-option.selected');
-        if (selectedSession) {
-            let seatCost = selectedSession.getAttribute('cost');
-            let seats = seatsInput.value;
-            const totalCostDisplay = document.getElementById('totalCost');
-            let total = seatCost * seats;
-            totalCostDisplay.innerText = `$${total}`;
-        }
+    seatsInputs.forEach(seatsInput => {
+        seatsInput.addEventListener('input', () => {
+            console.log('Seats input changed');
+            const selectedSession = seatsInput.parentElement.parentElement.querySelector('.session-option.selected');
 
+            if (selectedSession) {
+                let seatCost = selectedSession.getAttribute('cost');
+                let seats = seatsInput.value;
+                const totalCostDisplay = seatsInput.parentElement.querySelector('#totalCost');
+                console.log(`Seat cost: ${seatCost}, Seats: ${seats}`);
+                let total = seatCost * seats;
+                totalCostDisplay.innerText = `$${total}`;
+            }
+        });
     });
+
+    // seatsInput.addEventListener('input', () => {
+    //     console.log('Seats input changed');
+    //     const selectedSession = document.querySelector('.session-option.selected');
+    //     if (selectedSession) {
+    //         let seatCost = selectedSession.getAttribute('cost');
+    //         let seats = seatsInput.value;
+    //         const totalCostDisplay = document.getElementById('totalCost');
+    //         let total = seatCost * seats;
+    //         totalCostDisplay.innerText = `$${total}`;
+    //     }
+
+    // });
 
     document.getElementById('locationFilter').addEventListener('change', function () {
     const selected = this.value.toLowerCase();

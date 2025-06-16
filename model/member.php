@@ -49,6 +49,7 @@ CLASS Member EXTENDS Database {
         $postcode=null,
         $phone=null,
         $email=null,
+        bool $dbGet = False
     ) {
         parent::__construct(); // gets a database connection
         $this->tableName = "members";
@@ -57,16 +58,7 @@ CLASS Member EXTENDS Database {
         $this->setMemberId($memberId);
         $this->setUserName($userName);
         $this->setPassword($password);
-        
-        // $this->setFirstName($firstName);
-        // $this->setLastName($lastName);
         $this->setRole($role);
-        // $this->setStreet($street);
-        // $this->setTown($town);
-        // $this->setState($state);
-        // $this->setPostcode($postcode);
-        // $this->setPhone($phone);
-        // $this->setEmail($email);
 
         if ($lastName) {
             $this->lastName = Cipher::secured_decrypt($lastName);
@@ -93,11 +85,10 @@ CLASS Member EXTENDS Database {
             $this->email = Cipher::secured_decrypt($email);
         }
 
-        // echo("here");
-        // IF ($this->userExists()) {
-        //     // Use this bit to get Aggregations
-        // }
-    
+        if ($dbGet && $memberId) {
+            // fill in the rest of the variables from the database with one function for all
+            $this->getMember();
+        }    
     }
     public function __destruct() {
         // no need to log destruction
@@ -214,6 +205,40 @@ CLASS Member EXTENDS Database {
     }
     public function getEmail() {
         return ($this->email);
+    }
+
+    /**
+     * Method: getMember
+     *
+     * Gets the member from the database based on memberId
+     * If memberId is not set, then returns null
+     */
+    public function getMember() {
+        if ($this->getMemberId()) {
+            $sql = "SELECT memberId, userName, password, firstName, lastName, role, street, town, state, postcode, phone, email FROM ".$this->tableName." WHERE memberId = ".$this->getMemberId();
+            // echo($sql);
+            $result = $this->run($sql);
+            if ($result) {
+                $row = $result->fetch_assoc();
+                if ($row) {
+                    // Set the properties from the row
+                    $this->setUserName($row['userName']);
+                    $this->setPassword($row['password']);
+                    $this->setFirstName($row['firstName']);
+                    $this->setLastName($row['lastName']);
+                    $this->setRole($row['role']);
+                    $this->setStreet($row['street']);
+                    $this->setTown($row['town']);
+                    $this->setState($row['state']);
+                    $this->setPostcode($row['postcode']);
+                    $this->setPhone($row['phone']);
+                    $this->setEmail($row['email']);
+                }
+                return true;
+            }
+            
+        }
+        return null;
     }
 
     public function log($entity="User", $action=null,$entry=null) {

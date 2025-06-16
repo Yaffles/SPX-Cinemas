@@ -8,7 +8,7 @@ CLASS BasketItem EXTENDS Database {
     private $basketItemId = null;
 
     private $sessionId = null;
-    private $memberId = null;
+    private ?Member $member = null;
     private $seats = null;
     private $totalCost = null;
     private $date = null;
@@ -25,7 +25,7 @@ CLASS BasketItem EXTENDS Database {
     public function __construct(
         ?int $basketItemId = null,
         ?int $sessionId = null,
-        ?int $memberId = null,
+        ?Member $member = null,
         ?int $seats = null,
         ?bool $dbGet = True,
         ?float $totalCost = null,
@@ -33,7 +33,7 @@ CLASS BasketItem EXTENDS Database {
     ) {
         parent::__construct(); // gets a database connection
         $this->setBasketItemId($basketItemId);
-        $this->setMemberId($memberId);
+        $this->setMember($member);
         $this->setSeats($seats);
         $this->setDate($date);
         
@@ -63,8 +63,8 @@ CLASS BasketItem EXTENDS Database {
         return $this->totalCost;
     }
 
-    public function getMemberId() {
-        return $this->memberId;
+    public function getMember() {
+        return $this->member;
     }
 
     public function getSeats() {
@@ -86,8 +86,8 @@ CLASS BasketItem EXTENDS Database {
         $this->basketItemId = $basketItemId;
     }
 
-    public function setMemberId($memberId) {
-        $this->memberId = $memberId;
+    public function setMember(?Member $member) {
+        $this->member = $member;
     }
 
     public function setSeats($seats) {
@@ -144,13 +144,13 @@ CLASS BasketItem EXTENDS Database {
             // Update the existing record
             $sql = "UPDATE basketItems SET sessionId = ?, memberId = ?, seats = ?, cost = ?
                       WHERE basketItemId = ?";
-            $params = [$this->getSession()->getSessionId(), $this->memberId, $this->seats, $this->totalCost, $this->basketItemId];
+            $params = [$this->getSession()->getSessionId(), $this->getMember()->getMemberId(), $this->seats, $this->totalCost, $this->basketItemId];
 
         } else {
             // Insert a new record
             $sql = "INSERT INTO basketItems (sessionId, memberId, seats, cost, date)
                       VALUES (?, ?, ?, ?, ?)";
-            $params = [$this->getSession()->getSessionId(), $this->memberId, $this->seats, $this->totalCost, $this->date];
+            $params = [$this->getSession()->getSessionId(), $this->getMember()->getMemberId(), $this->seats, $this->totalCost, $this->date];
         }
 
         // Execute the query

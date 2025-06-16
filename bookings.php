@@ -25,11 +25,11 @@ IF ($method=="POST") {
             $message = "Error. Try again";
             break;
     }
-    $bookings = Booking::loadBookings($member->getMemberId());
+    $bookings = Booking::loadBookings($member);
 }
     
 else IF ($method=="GET") {
-    $bookings = Booking::loadBookings($member->getMemberId());
+    $bookings = Booking::loadBookings($member);
 }
 else {
     $message = "Invalid Request";
