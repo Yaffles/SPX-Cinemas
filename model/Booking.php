@@ -152,7 +152,7 @@ CLASS Booking EXTENDS Database {
      */
     public function getBooking() {
         IF ($this->getMemberId()) {
-            $sql = "SELECT bookingItemId, sessionId, bookingId, seats, cost, date, time FROM bookingitems WHERE bookingId = ?";
+            $sql = "SELECT bookingItemId, sessionId, bookingId, seats, cost, date FROM bookingitems WHERE bookingId = ?";
             $results = $this->query($sql,[$this->getBookingId()]);
             FOREACH ($results AS $result) {
                 $bookingItem = new BookingItem(
@@ -162,7 +162,6 @@ CLASS Booking EXTENDS Database {
                     seats: $result['seats'],
                     cost: $result['cost'],
                     date: $result['date'],
-                    time: $result['time'],
                     dbGet: False
                 );
 

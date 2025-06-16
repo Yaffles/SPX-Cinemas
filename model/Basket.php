@@ -10,7 +10,6 @@ require_once("BookingItems.php");
 require_once("Booking.php");
 
 CLASS Basket EXTENDS Database {
-
     private $memberId = null;
     private ?array $basketItems = [];
     private float $totalCost = 0.0;
@@ -65,49 +64,6 @@ CLASS Basket EXTENDS Database {
     public function setTotalCost($totalCost) {
         $this->totalCost = $totalCost;
     }
-
-    public function setMovieId($movieId) {
-        $this->movieId = $movieId;
-    }
-
-    public function setMovieName($movieName) {
-        $this->movieName = $movieName;
-    }
-
-    public function setPosterFile($posterFile) {
-        $this->posterFile = $posterFile;
-    }
-
-    public function setMovieDescription($movieDescription) {
-        $this->movieDescription = $movieDescription;
-    }
-
-    public function setTrailerName($trailerName) {
-        $this->trailerName = $trailerName;
-    }
-
-
-
-    // Object Relational Mapping Methods
-    /**
-     * Check if this Session record exists in database
-     */
-    public function exists() {
-        $exists = False;
-
-        IF ($this->getMovieId()) {
-            $sql = "SELECT COUNT(*) AS numRows FROM ".self::$tableName." WHERE movieId = ?";
-
-            $results = $this->query($sql,[$this->getMovieId()]);
-
-            FOREACH($results AS $result) {
-                $numRows    = $result['numRows']; //num_rows;
-            }
-            $exists = $numRows==1;
-        }
-        RETURN $exists;
-    }
-
 
 
 
@@ -246,12 +202,11 @@ CLASS Basket EXTENDS Database {
         foreach ($this->basketItems as $index => $basketItem) {
             // update it in the array
             $bookingItem = new BookingItem(
-                sessionId: $basketItem->getSessionId(),
+                sessionId: $basketItem->getSession()->getSessionId(),
                 bookingId: $booking->getBookingId(),
                 seats: $basketItem->getSeats(),
                 cost: $basketItem->getTotalCost(),
                 date: $basketItem->getDate(),
-                time: $basketItem->getTime(),
                 dbGet: False
             );
             $bookingItem->save();

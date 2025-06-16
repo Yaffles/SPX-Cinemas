@@ -71,10 +71,10 @@ else {
                                 if ($bookingItems) {
                                     foreach ($bookingItems as $bookingItem) {
                                         echo "<div class='bookingItem'>";
-                                        echo "<h2>" . $bookingItem->getMovieName() . "</h2>";
-                                        echo "<h3>Seats: " . $bookingItem->getSeats() . "</h2>";
-                                        echo "<h3>Date: " . $bookingItem->getDate() . "</h2>";
-                                        echo "<h3>Time: " . $bookingItem->getTime() . "</h2>";
+                                        echo "<h2>" . $bookingItem->getSession()->getMovie()->getMovieName() . "</h2>";
+                                        echo "<h3>Seats: " . $bookingItem->getSeats() . "</h3>";
+                                        echo "<h3>Date: " . $bookingItem->getDate() . "</h3>";
+                                        echo "<h3>Time: " . $bookingItem->getSession()->getTime() . "</h3>";
                                         echo "</div>";
                                     }
                                 } else {

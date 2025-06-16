@@ -2,8 +2,10 @@
 
 require_once("Database.php");
 require_once("Session.php");
+require_once("Movie.php");
 
 CLASS BasketItem EXTENDS Database {
+    private $basketItemId = null;
 
     private $sessionId = null;
     private $memberId = null;
@@ -11,16 +13,7 @@ CLASS BasketItem EXTENDS Database {
     private $totalCost = null;
     private $date = null;
 
-    private $seatCost = null;
-    private $time = null;
-    private $movieId = null;
-    private $cinemaId = null;
-    
-    // old
-    private $movieName = null;
-    private $posterFile = null;
-    private $movieDescription = null;
-    private $trailerName = null;
+    private ?Session $session = null;
 
 
     /**
@@ -41,31 +34,25 @@ CLASS BasketItem EXTENDS Database {
         parent::__construct(); // gets a database connection
         $this->setBasketItemId($basketItemId);
         $this->setMemberId($memberId);
-        $this->setSessionId($sessionId);
         $this->setSeats($seats);
         $this->setDate($date);
         
 
-        $this->findSession();
+        $this->findSession($sessionId);
 
         $this->setTotalCost($totalCost);
         $this->calculateTotalCost();
-        $this->findMovie();
-
-        // IF ($this->exists()) {
-        //     $this->getMovie(dbGet : $dbGet);
-        // }
     }
 
     // GETS and SETS Methods
 
     // GET Methods
-    public function getDate() {
-        return $this->date;
+    public function getSession() {
+        return $this->session;
     }
 
-    public function getTime() {
-        return $this->time;
+    public function getDate() {
+        return $this->date;
     }
 
     public function getBasketItemId() {
@@ -84,38 +71,7 @@ CLASS BasketItem EXTENDS Database {
         return $this->seats;
     }
 
-    public function getSessionId() {
-        return $this->sessionId;
-    }
 
-    public function getMovieId() {
-        return $this->movieId;
-    }
-
-    public function getMovieName() {
-        return $this->movieName;
-    }
-
-    public function getPosterFile() {
-        return $this->posterFile;
-    }
-
-    public function getMovieDescription() {
-        return $this->movieDescription;
-    }
-
-    public function getTrailerName() {
-        return $this->trailerName;
-    }
-
-    public function getSessions(): ?array {
-        // If sessions haven't been loaded yet, load them
-        if (empty($this->sessions) && $this->getMovieId() !== null) {
-            // echo("Loading sessions on demand for Cinema: ".$this->getMovieId()."<br/>");
-            $this->sessions = Session::loadSessions(movie: $this);
-        }
-        return $this->sessions;
-    }
 
     // SET Methods
     public function setDate($date) {
@@ -124,10 +80,6 @@ CLASS BasketItem EXTENDS Database {
 
     public function setSeatCost($seatCost) {
         $this->seatCost = $seatCost;
-    }
-
-    public function setTime($time) {
-        $this->time = $time;
     }
 
     public function setBasketItemId($basketItemId) {
@@ -142,30 +94,6 @@ CLASS BasketItem EXTENDS Database {
         $this->seats = $seats;
     }
 
-    public function setSessionId($sessionId) {
-        $this->sessionId = $sessionId;
-    }
-
-    public function setMovieId($movieId) {
-        $this->movieId = $movieId;
-    }
-
-    public function setMovieName($movieName) {
-        $this->movieName = $movieName;
-    }
-
-    public function setPosterFile($posterFile) {
-        $this->posterFile = $posterFile;
-    }
-
-    public function setMovieDescription($movieDescription) {
-        $this->movieDescription = $movieDescription;
-    }
-
-    public function setTrailerName($trailerName) {
-        $this->trailerName = $trailerName;
-    }
-
     public function setSession(?Session $session) {
         $this->session = $session;
     }
@@ -176,46 +104,16 @@ CLASS BasketItem EXTENDS Database {
 
     public function calculateTotalCost() {
 
-        if ($this->seats === null || $this->seatCost === null) {
+        if ($this->seats === null || $this->session->getSeatCost() === null) {
             return;
         }
-        $this->totalCost = $this->seats * $this->seatCost;
+        $this->setTotalCost($this->seats * $this->session->getSeatCost());
     }
 
 
-    public function findMovie() {
-        if ($this->sessionId) {
-            $sql = "SELECT m.movieId, m.movieName, m.posterFile, m.movieDescription, m.trailerName
-                    FROM sessions AS s
-                    JOIN movies AS m ON s.movieId = m.movieId
-                    WHERE s.sessionId = ?";
-            $results = $this->query($sql, [$this->sessionId]);
-            FOREACH($results AS $result) {
-                $this->setMovieId($result['movieId']);
-                $this->setMovieName($result['movieName']);
-                $this->setPosterFile($result['posterFile']);
-                $this->setMovieDescription($result['movieDescription']);
-                $this->setTrailerName($result['trailerName']);
-            }
-        }
-    }
-
-    public function findSession() {
-        if ($this->sessionId) {
-            // seatCost and time
-            $sql = "SELECT seatCost, time FROM sessions WHERE sessionId = ?";
-            $results = $this->query($sql, [$this->sessionId]);
-            FOREACH($results AS $result) {
-                $this->seatCost = $result['seatCost'];
-                // convert H:i:s to H:i to a string
-                
-                $time = DateTime::createFromFormat('H:i:s', $result['time']);
-                // convert to string
-                $time = $time ? $time->format('H:i') : null;
-
-
-                $this->time = $time;
-            }
+    public function findSession($sessionId) {
+        if ($sessionId) {
+            $this->session = new Session(sessionId: $sessionId, dbGet: True);
         }
     }
 
@@ -226,7 +124,7 @@ CLASS BasketItem EXTENDS Database {
     public function exists() {
         $exists = False;
 
-        IF ($this->getMovieId()) {
+        IF ($this->getBasketItemId()) {
             $sql = "SELECT COUNT(*) AS numRows FROM basketItems WHERE basketItemId = ?";
 
             $results = $this->query($sql,[$this->getBasketItemId()]);
@@ -236,7 +134,7 @@ CLASS BasketItem EXTENDS Database {
             }
             $exists = $numRows==1;
         }
-        RETURN $exists;
+        return $exists;
     }
 
 
@@ -247,9 +145,8 @@ CLASS BasketItem EXTENDS Database {
             $sql = "UPDATE basketItems SET sessionId = ?, memberId = ?, seats = ?, cost = ?
                       WHERE basketItemId = ?";
             $params = [$this->sessionId, $this->memberId, $this->seats, $this->totalCost, $this->basketItemId];
-
             
-        } ELSE {
+        } else {
             // Insert a new record
             $sql = "INSERT INTO basketItems (sessionId, memberId, seats, cost, date)
                       VALUES (?, ?, ?, ?, ?)";
@@ -283,35 +180,5 @@ CLASS BasketItem EXTENDS Database {
             return False;
         }
     }
-
-    /**
-     * Static Method to Load Movie from the database for a Session
-     */
-    public static function loadMovies(?Session $session=null) : array {
-        $movies = [];
-
-        IF ($session) {
-            $sql = "SELECT ".implode(', ',self::fieldList)." FROM ".self::$tableName." AS m, sessions AS s WHERE s.movieId = m.movieId AND s.sessionId = ?";
-            // echo("load Movies: ".$sql."<br/>");
-            $db = Database();
-            $results = $db->query($sql, [$session->getSessionId()]);
-            FOREACH($results AS $result) {
-                $movie = new self(
-                    movieId:    $result['movieId'],
-                    movieName:  $result['movieName'],
-                    posterFile: $result['posterFile'],
-                    movieDescription: $result['movieDescription'],
-                    trailerName: $result['trailerName'],
-                    dbGet : False
-                );
-                $movies[] = $movie;
-            }
-        }
-        RETURN $movies;
-
-    }
-
-    // Business Functions
-
 } // END CLASS
 ?>

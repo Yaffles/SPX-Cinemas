@@ -96,6 +96,7 @@ else {
                 <div class="row">
                     <?php
                         $items = $basket->getBasketItems();
+                        
                         if ($items) {
                             foreach ($items as $basketItem) {
                                 $date = $basketItem->getDate() ?? date("Y-m-d");
@@ -105,10 +106,10 @@ else {
 
                                 <div class='basketItem'>
                                     <div class='basketLeft'>
-                                        <img src='<?= htmlspecialchars($basketItem->getPosterFile()) ?>' alt='<?= htmlspecialchars($basketItem->getMovieName()) ?>'>
+                                        <img src='<?= htmlspecialchars($basketItem->getSession()->getMovie()->getPosterFile()) ?>'>
                                         <div class='basketinfo'>
-                                            <h2><?= htmlspecialchars($basketItem->getMovieName()) ?></h2>
-                                            <h3><?= htmlspecialchars($basketItem->getTime()) ?></h3>
+                                            <h2><?= htmlspecialchars($basketItem->getSession()->getMovie()->getMovieName()) ?></h2>
+                                            <h3><?= htmlspecialchars($basketItem->getSession()->getTime()) ?></h3>
                                             <h2><?php //htmlspecialchars($basketItem->getCinemaName()) ?></h2>
                                             <h2><?php //htmlspecialchars($basketItem->getLocationName()) ?></h2>
                                             
@@ -116,19 +117,19 @@ else {
                                     </div> <!-- basketLeft -->
 
                                     <div class='basketRight'>
-                                        <form id='updateForm' method='POST' action='basket.php'>
+                                        <form id='updateForm' method='POST' action=''>
                                             <label for='seats'>Seats:</label>
                                             <input name='seats' type='number' min='1' max='10' value='<?= htmlspecialchars($basketItem->getSeats()) ?>'>
                                             <p>Total Cost: $<?= number_format($basketItem->getTotalCost(), 2) ?></p>
                                             <input type='hidden' name='_method' value='UPDATE'>
-                                            <input type='hidden' name='sessionId' value='<?= htmlspecialchars($basketItem->getSessionId()) ?>'>
+                                            <input type='hidden' name='sessionId' value='<?= htmlspecialchars($basketItem->getSession()->getSessionId()) ?>'>
                                             <input type='hidden' name='totalCost' value='<?= htmlspecialchars($basketItem->getTotalCost()) ?>'>
                                             <button type='submit' class='btn btn-primary'>Update</button>
                                         </form>
 
-                                        <form method='POST' action='basket.php'>
+                                        <form method='POST' action=''>
                                             <input type='hidden' name='_method' value='DELETE'>
-                                            <input type='hidden' name='sessionId' value='<?= htmlspecialchars($basketItem->getSessionId()) ?>'>
+                                            <input type='hidden' name='sessionId' value='<?= htmlspecialchars($basketItem->getSession()->getSessionId()) ?>'>
                                             <button type='submit' class='btn btn-danger'>Remove</button>
                                         </form>
                                     </div> <!-- basketRight -->
