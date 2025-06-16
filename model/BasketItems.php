@@ -144,13 +144,13 @@ CLASS BasketItem EXTENDS Database {
             // Update the existing record
             $sql = "UPDATE basketItems SET sessionId = ?, memberId = ?, seats = ?, cost = ?
                       WHERE basketItemId = ?";
-            $params = [$this->sessionId, $this->memberId, $this->seats, $this->totalCost, $this->basketItemId];
-            
+            $params = [$this->getSession()->getSessionId(), $this->memberId, $this->seats, $this->totalCost, $this->basketItemId];
+
         } else {
             // Insert a new record
             $sql = "INSERT INTO basketItems (sessionId, memberId, seats, cost, date)
                       VALUES (?, ?, ?, ?, ?)";
-            $params = [$this->sessionId, $this->memberId, $this->seats, $this->totalCost, $this->date];
+            $params = [$this->getSession()->getSessionId(), $this->memberId, $this->seats, $this->totalCost, $this->date];
         }
 
         // Execute the query

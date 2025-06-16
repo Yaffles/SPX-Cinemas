@@ -1,0 +1,320 @@
+@startuml
+!define LIGHTYELLOW #FFFACD
+!define LIGHTBLUE #E6F3FF
+!define LIGHTGREEN #F0FFF0
+
+skinparam class {
+    BackgroundColor LIGHTYELLOW
+    BorderColor Black
+    ArrowColor Black
+}
+
+' Database class (Updated: no longer abstract)
+class Database {
+    +dbUser: string
+    +dbPassword: string
+    +dbServer: string
+    +dbName: string
+    -{static} conn: mysqli
+    +__construct()
+    +getConn()
+    #query(sql, params)
+    #run(sql)
+    +commit()
+    +close()
+}
+
+' AuditLog class
+class AuditLog {
+    -tableName: string = "auditlog"
+
+    +__construct()
+    +addLog(entity: string, action: string, entry: string): bool
+    +getLogs(limit: int = 100): array
+}
+
+' CinemaLocation class (Updated for lazy loading)
+class CinemaLocation {
+    -locationId: int
+    -locationName: string
+    -GPS: string
+    -address: string
+    -cinemas: array
+    -{static} tableName: string = "cinemaLocations"
+
+    +__construct(locationId: int = null, locationName: string = null, GPS: string = null, address: string = null, dbGet: bool = false)
+    +getLocationId(): int
+    +getLocationName(): string
+    +getGPS(): string
+    +getAddress(): string
+    +getCinemas(): array
+    +setLocationId(locationId: int = null)
+    +setLocationName(locationName: string = null)
+    +setGPS(GPS: string = null)
+    +setAddress(address: string = null)
+    +setCinemas(cinemas: array = null)
+    -exists(): bool
+    -getCinemaLocation(dbGet: bool = true)
+    +{static} loadCinemaLocations(): array
+    +display()
+}
+
+' Movie class (Updated for lazy loading)
+class Movie {
+    -movieId: int
+    -movieName: string
+    -posterFile: string
+    -movieDescription: string
+    -trailerName: string
+    -sessions: array
+    -{static} tableName: string = "movies"
+
+    +__construct(movieId: int = null, movieName: string = null, posterFile: string = null, movieDescription: string = null, trailerName: string = null, dbGet: bool = true)
+    +getMovieId(): int
+    +getMovieName(): string
+    +getPosterFile(): string
+    +getMovieDescription(): string
+    +getTrailerName(): string
+    +getSessions(): array
+    +setMovieId(movieId: int)
+    +setMovieName(movieName: string)
+    +setPosterFile(posterFile: string)
+    +setMovieDescription(movieDescription: string)
+    +setTrailerName(trailerName: string)
+    +setSession(session: Session)
+    +exists(): bool
+    +getMovie(dbGet: bool = false)
+    +{static} loadMovies(session: Session = null): array
+}
+
+' Session class (Updated to hold full objects)
+class Session {
+    -sessionId: int
+    -cinema: Cinema
+    -movie: Movie
+    -time: string
+    -seatCost: float
+    -{static} tableName: string = "sessions"
+
+    +__construct(sessionId: int = null, cinema: Cinema = null, movie: Movie = null, time: string = null, seatCost: float = null, dbGet: bool = true)
+    +getSessionId(): int
+    +getCinema(): Cinema
+    +getMovie(): Movie
+    +getTime(): string
+    +getSeatCost(): float
+    +getTotalCost(seats: int): float
+    +setSessionId(sessionId: int)
+    +setCinema(cinema: Cinema)
+    +setMovie(movie: Movie)
+    +setTime(time: string)
+    +setSeatCost(seatCost: float)
+    +exists(): bool
+    +getSession(dbGet: bool = true)
+    +{static} loadSessions(cinema: Cinema = null, movie: Movie = null): array
+    +display()
+}
+
+' Member class
+class Member {
+    -memberId: int
+    -userName: string
+    -password: string
+    -firstName: string
+    -lastName: string
+    -role: string
+    -street: string
+    -town: string
+    -state: string
+    -postcode: string
+    -phone: string
+    -email: string
+    -auditLog: AuditLog
+
+    +__construct(memberId: int = null, userName: string = null, ...)
+    +getMemberId(): int
+    +getUserName(): string
+    +getFullName(): string
+    +getRole(): string
+    +getEmail(): string
+    +setMemberId(memberId: int)
+    +setUserName(userName: string)
+    +setPassword(password: string)
+    +setFirstName(firstName: string)
+    +setLastName(lastName: string)
+    +setRole(role: string)
+    +setEmail(email: string)
+    +log(entity: string, action: string, entry: string)
+    +userExists(userName: string = null): bool
+    +login(iUserName: string, iPassword: string): int
+    +logout(): int
+    +save(): int
+    +delete(): int
+}
+
+' Basket class
+class Basket {
+    -memberId: int
+    -basketItems: array
+    -totalCost: float = 0.0
+    -auditLog: AuditLog
+
+    +__construct(memberId: int = null, dbGet: bool = true)
+    +getMemberId(): int
+    +getTotalCost(): float
+    +getBasketItems(): array
+    +setMemberId(memberId: int)
+    +setTotalCost(totalCost: float)
+    +getBasket()
+    +addItem(sessionId: int, seats: int, date: string): int
+    +removeItem(sessionId: int): int
+    +updateItem(sessionId: int, seats: int): int
+    +checkout(): int
+}
+
+' BasketItem class
+class BasketItem {
+    -basketItemId: int
+    -sessionId: int
+    -memberId: int
+    -seats: int
+    -totalCost: float
+    -date: string
+    -session: Session
+
+    +__construct(basketItemId: int = null, sessionId: int = null, memberId: int = null, seats: int = null, ...)
+    +getSession(): Session
+    +getDate(): string
+    +getBasketItemId(): int
+    +getTotalCost(): float
+    +getMemberId(): int
+    +getSeats(): int
+    +setSeats(seats: int)
+    +setSession(session: Session)
+    +setTotalCost(totalCost: float)
+    +calculateTotalCost()
+    +findSession(sessionId: int)
+    +exists(): bool
+    +save(): bool
+    +delete(): bool
+}
+
+
+' Booking class (Updated)
+class Booking {
+    -memberId: int
+    -bookingId: int
+    -cost: float = 0.0
+    -bookingDate: string
+    -bookingItems: array
+
+    +__construct(memberId: int = null, bookingId: int = null, ...)
+    +getBookingId(): int
+    +getBookingDate(): string
+    +getMemberId(): int
+    +getCost(): float
+    +getBookingItems(): array
+    +setBookingId(bookingId: int)
+    +setBookingDate(bookingDate: string)
+    +setMemberId(memberId: int)
+    +setCost(cost: float)
+    +save(): bool
+    +getBooking()
+    +addItem(sessionId: int, seats: int, date: string): int
+    +{static} loadBookings(memberId: int = null): array
+}
+
+' BookingItem class (Updated)
+class BookingItem {
+    -bookingItemId: int
+    -bookingId: int
+    -seats: int
+    -cost: float
+    -date: string
+    -time: string
+    -session: Session
+
+    +__construct(bookingItemId: int = null, sessionId: int = null, ...)
+    +getSession(): Session
+    +getDate(): string
+    +getTime(): string
+    +getBookingItemId(): int
+    +getCost(): float
+    +getBookingId(): int
+    +getSeats(): int
+    +setCost(cost: float)
+    +setSession(session: Session)
+    +calculateTotalCost()
+    +findSession(sessionId: int)
+    +exists(): bool
+    +save(): bool
+    +delete(): bool
+}
+
+' Cinema class (Updated)
+class Cinema {
+    -cinemaId: int
+    -cinemaName: string
+    -cinemaLocation: CinemaLocation
+    -sessions: array
+    -{static} tableName: string = "cinemas"
+
+    +__construct(cinemaId: int = null, cinemaName: string = null, cinemaLocation: CinemaLocation = null, dbGet: bool = true)
+    +getCinemaId(): int
+    +getCinemaName(): string
+    +getCinemaLocation(): CinemaLocation
+    +getSessions(): array
+    +getMovies(): array
+    +setCinemaId(cinemaId: int = null)
+    +setCinemaName(cinemaName: string = null)
+    +setCinemaLocation(cinemaLocation: CinemaLocation = null)
+    -exists(): bool
+    -getCinema()
+    +{static} loadCinemas(cinemaLocation: CinemaLocation): array
+    +display()
+}
+
+' --- Relationships ---
+
+' Inheritance (All classes extend Database)
+Database <|-- AuditLog
+Database <|-- CinemaLocation
+Database <|-- Movie
+Database <|-- Session
+Database <|-- Member
+Database <|-- Basket
+Database <|-- BasketItem
+Database <|-- Booking
+Database <|-- BookingItem
+Database <|-- Cinema
+
+' Composition (Part's lifecycle is managed by the Whole)
+Member "1" *-- "1" AuditLog : creates and owns >
+Basket "1" *-- "1" AuditLog : creates and owns >
+
+' Aggregation (Whole "has-a" collection of Parts)
+CinemaLocation "1" o-- "*" Cinema : contains
+Cinema "1" o-- "*" Session : has
+Movie "1" o-- "*" Session : shows
+Basket "1" o-- "*" BasketItem : contains
+Booking "1" o-- "*" BookingItem : contains
+
+' Association (An object holds a direct, persistent reference to another)
+Basket --> "1" Member : belongs to
+Booking --> "1" Member : belongs to
+BasketItem --> "1" Session : references
+BookingItem --> "1" Session : references
+Session --> "1" Cinema : is in
+Session --> "1" Movie : is for
+Cinema --> "1" CinemaLocation : is at
+
+' Dependencies (An object "uses" another temporarily or via static call)
+CinemaLocation ..> Cinema : <<calls static loadCinemas>>
+Cinema ..> Session : <<calls static loadSessions>>
+Movie ..> Session : <<calls static loadSessions>>
+Cinema ..> Movie : <<uses Movie via Session>>
+Basket ..> Session : <<uses for item info>>
+Basket ..> Booking : <<creates on checkout>>
+Basket ..> BookingItem : <<creates on checkout>>
+Booking ..> Session : <<uses for item info>>
+
+@enduml

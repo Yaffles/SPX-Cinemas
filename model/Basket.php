@@ -131,7 +131,7 @@ CLASS Basket EXTENDS Database {
         $this->auditLog->addLog(
             entity: "Basket",
             action: "Add Item",
-            entry: "Added sessionId {$sessionId} at {$session->getCinema()->getCinemaName()} with {$seats} seats to basket for memberId {$this->getMemberId()}" //TODO add cinema and mabye user name
+            entry: "Added sessionId {$sessionId} at {$session->getCinema()->getCinemaName()} with {$seats} seats to basket for memberId {$this->getMemberId()}"
         );
         return 0;
     }
@@ -142,7 +142,7 @@ CLASS Basket EXTENDS Database {
         }
         // find the basket item
         foreach ($this->basketItems as $index => $basketItem) {
-            if ($basketItem->getSessionId() == $sessionId) {
+            if ($basketItem->getSession()->getSessionId() == $sessionId) {
                 // remove it from the array
                 unset($this->basketItems[$index]);
                 $this->setTotalCost($this->getTotalCost() - $basketItem->getTotalCost());
@@ -165,7 +165,7 @@ CLASS Basket EXTENDS Database {
         }
         // find the basket item
         foreach ($this->basketItems as $index => $basketItem) {
-            if ($basketItem->getSessionId() == $sessionId) {
+            if ($basketItem->getSession()->getSessionId() == $sessionId) {
                 // update it in the array
                 $originalCost = $basketItem->getTotalCost();
 
