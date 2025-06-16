@@ -126,7 +126,7 @@ CLASS Cinema EXTENDS Database {
                 // or just create a stub (dbGet: False) depending on requirements.
                 // Loading fully here might cause recursion if CinemaLocation loads Cinemas.
                 // For now, let's assume CinemaLocation doesn't load Cinemas in its constructor.
-                $this->setCinemaLocation(new CinemaLocation(locationId:$result['locationId']));
+                $this->setCinemaLocation(new CinemaLocation(locationId:$result['locationId'], dbGet: True));
             }
             // echo("Get Cinema data from DB: ".$this->getCinemaId()."<br/>");
         }

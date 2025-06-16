@@ -104,7 +104,7 @@ CLASS Basket EXTENDS Database {
             $this->basketItems = [];
         }
         foreach ($this->basketItems as $basketItem) {
-            if ($basketItem->getSessionId() == $sessionId) {
+            if ($basketItem->getSession()->getSessionId() == $sessionId && $basketItem->getDate() == $date) {
                 $basketItem->setSeats($basketItem->getSeats() + $seats);
                 $basketItem->save();
                 // update total cost, making sure too add too much

@@ -25,7 +25,7 @@ class Database {
      * @return type A         return value summary.
      */
     public function __construct($dbServer="spx-webtest-s01",$dbUser='FURI01', $dbPassword='FURI01',$dbName='furi01db') {
-        // $dbServer = "localhost";
+        $dbServer = "localhost";
         $this->setDbServer($dbServer);
         $this->setDbUser($dbUser);
         $this->setDbPassword($dbPassword);

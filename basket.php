@@ -109,9 +109,9 @@ else {
                                         <img src='<?= htmlspecialchars($basketItem->getSession()->getMovie()->getPosterFile()) ?>'>
                                         <div class='basketinfo'>
                                             <h2><?= htmlspecialchars($basketItem->getSession()->getMovie()->getMovieName()) ?></h2>
-                                            <h3><?= htmlspecialchars($basketItem->getSession()->getTime()) ?></h3>
-                                            <h2><?php //htmlspecialchars($basketItem->getCinemaName()) ?></h2>
-                                            <h2><?php //htmlspecialchars($basketItem->getLocationName()) ?></h2>
+                                            <h3><?= htmlspecialchars($date . ' • ' . $basketItem->getSession()->getTime()) ?></h3>
+                                            <h3><?= htmlspecialchars($basketItem->getSession()->getCinema()->getCinemaLocation()->getLocationName() . ' | ' . $basketItem->getSession()->getCinema()->getCinemaName()) ?></h3>
+                                            
                                             
                                         </div> <!-- basketinfo -->
                                     </div> <!-- basketLeft -->

@@ -15,8 +15,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const sessionId = session.getAttribute('sessionId');
             console.log(`Session ID: ${sessionId}`);
             // get input field
-            const inputField = document.getElementById('sessionId');
+
+            const inputField = session.parentElement.querySelector('#sessionId');
             inputField.value = sessionId;
+            console.log(`Input field: ${inputField.value}`);
 
             let seatCost = session.getAttribute('cost');
             const totalCostDisplay = document.getElementById('totalCost');
@@ -38,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let total = seatCost * seats;
             totalCostDisplay.innerText = `$${total}`;
         }
+
     });
 
     document.getElementById('locationFilter').addEventListener('change', function () {

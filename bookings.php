@@ -75,6 +75,8 @@ else {
                                         echo "<h3>Seats: " . $bookingItem->getSeats() . "</h3>";
                                         echo "<h3>Date: " . $bookingItem->getDate() . "</h3>";
                                         echo "<h3>Time: " . $bookingItem->getSession()->getTime() . "</h3>";
+                                        echo "<h3>Location: " . $bookingItem->getSession()->getCinema()->getCinemaLocation()->getLocationName() . "</h3>";
+                                        echo "<h3>Cinema: " . $bookingItem->getSession()->getCinema()->getCinemaName() . "</h3>";
                                         echo "</div>";
                                     }
                                 } else {
