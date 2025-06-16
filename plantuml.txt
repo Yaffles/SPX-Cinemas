@@ -153,16 +153,16 @@ class Member {
 
 ' Basket class
 class Basket {
-    -memberId: int
+    -member: Member
     -basketItems: array
     -totalCost: float = 0.0
     -auditLog: AuditLog
 
     +__construct(memberId: int = null, dbGet: bool = true)
-    +getMemberId(): int
+    +getMember(): int
     +getTotalCost(): float
     +getBasketItems(): array
-    +setMemberId(memberId: int)
+    +setMember(member: Member)
     +setTotalCost(totalCost: float)
     +getBasket()
     +addItem(sessionId: int, seats: int, date: string): int
@@ -174,19 +174,18 @@ class Basket {
 ' BasketItem class
 class BasketItem {
     -basketItemId: int
-    -sessionId: int
-    -memberId: int
+    -member: Member
     -seats: int
     -totalCost: float
     -date: string
     -session: Session
 
-    +__construct(basketItemId: int = null, sessionId: int = null, memberId: int = null, seats: int = null, ...)
+    +__construct(basketItemId: int = null, sessionId: int = null, member: Member = null, seats: int = null, ...)
     +getSession(): Session
     +getDate(): string
     +getBasketItemId(): int
     +getTotalCost(): float
-    +getMemberId(): int
+    +getMember(): Member
     +getSeats(): int
     +setSeats(seats: int)
     +setSession(session: Session)
@@ -201,21 +200,21 @@ class BasketItem {
 
 ' Booking class (Updated)
 class Booking {
-    -memberId: int
+    -member: Member
     -bookingId: int
     -cost: float = 0.0
     -bookingDate: string
     -bookingItems: array
 
-    +__construct(memberId: int = null, bookingId: int = null, ...)
+    +__construct(member: Member = null, bookingId: int = null, ...)
     +getBookingId(): int
     +getBookingDate(): string
-    +getMemberId(): int
+    +getMember(): Member
     +getCost(): float
     +getBookingItems(): array
     +setBookingId(bookingId: int)
     +setBookingDate(bookingDate: string)
-    +setMemberId(memberId: int)
+    +setMember(member: Member)
     +setCost(cost: float)
     +save(): bool
     +getBooking()
@@ -226,7 +225,7 @@ class Booking {
 ' BookingItem class (Updated)
 class BookingItem {
     -bookingItemId: int
-    -bookingId: int
+    -booking: Booking
     -seats: int
     -cost: float
     -date: string
@@ -239,7 +238,7 @@ class BookingItem {
     +getTime(): string
     +getBookingItemId(): int
     +getCost(): float
-    +getBookingId(): int
+    +getBooking(): Booking
     +getSeats(): int
     +setCost(cost: float)
     +setSession(session: Session)
@@ -293,16 +292,18 @@ Basket "1" *-- "1" AuditLog : creates and owns >
 
 ' Aggregation (Whole "has-a" collection of Parts)
 CinemaLocation "1" o-- "*" Cinema : contains
-Cinema "1" o-- "*" Session : has
-Movie "1" o-- "*" Session : shows
-Basket "1" o-- "*" BasketItem : contains
-Booking "1" o-- "*" BookingItem : contains
+Cinema "1" o-- "*" Session : has sessions
+Movie "1" o-- "*" Session : is shown in
+Basket "1" o-- "*" BasketItem : contains items
+Booking "1" o-- "*" BookingItem : contains items
 
 ' Association (An object holds a direct, persistent reference to another)
-Basket --> "1" Member : belongs to
-Booking --> "1" Member : belongs to
-BasketItem --> "1" Session : references
-BookingItem --> "1" Session : references
+Basket --> "1" Member : for
+Booking --> "1" Member : for
+BasketItem --> "1" Member : for
+BasketItem --> "1" Session : of
+BookingItem --> "1" Booking : part of
+BookingItem --> "1" Session : of
 Session --> "1" Cinema : is in
 Session --> "1" Movie : is for
 Cinema --> "1" CinemaLocation : is at
@@ -311,7 +312,6 @@ Cinema --> "1" CinemaLocation : is at
 CinemaLocation ..> Cinema : <<calls static loadCinemas>>
 Cinema ..> Session : <<calls static loadSessions>>
 Movie ..> Session : <<calls static loadSessions>>
-Cinema ..> Movie : <<uses Movie via Session>>
 Basket ..> Session : <<uses for item info>>
 Basket ..> Booking : <<creates on checkout>>
 Basket ..> BookingItem : <<creates on checkout>>
